@@ -1,12 +1,18 @@
-/* Trilha 3 — Avançado (Purple): index + 2 módulos (prompts copy-run + Hook Machine/skill). */
+/* Trilha 3 — Avançado (Purple): index + 2 módulos (versão expandida).
+   Prompts copy-run (#30) + skill Hook Machine; profundidade 500-800 linhas (#14). */
 const L = require('./lib.js');
 const acc = 'purple';
 
 const lede = (mod,n,h)=>`      <p data-inema-block="m${mod}-t${n}-p1" class="text-neutral-300 mb-6 leading-relaxed">${h}</p>`;
+const para = (mod,n,p,h)=>`      <p data-inema-block="m${mod}-t${n}-p${p}" class="text-neutral-300 mb-6 leading-relaxed">${h}</p>`;
 const tip = (t,h)=>`      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> ${t}</h3><p class="text-neutral-300 text-sm">${h}</p></div>`;
 const novo = (t,h)=>`      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? ${t}</h3><p class="text-neutral-300 text-sm">${h}</p></div>`;
 const concept = (t,h,items)=>`      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> ${t}</h3><p class="text-neutral-300 mb-3 text-sm">${h}</p>${items?`<ul class="space-y-2 text-neutral-300 text-sm">${items.map(i=>`<li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>${i}</span></li>`).join('')}</ul>`:''}</div>`;
 const alert = (t,h)=>`      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> ${t}</h3><p class="text-neutral-300 text-sm">${h}</p></div>`;
+const doDont = (doT, doItems, dontT, dontItems)=>`      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ ${doT}</h4><ul class="space-y-3 text-neutral-300 text-sm">${doItems.map(i=>`<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>${i}</span></li>`).join('')}</ul></div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ ${dontT}</h4><ul class="space-y-3 text-neutral-300 text-sm">${dontItems.map(i=>`<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>${i}</span></li>`).join('')}</ul></div>
+      </div>`;
 
 // Bloco copy-run: objetivo + bloco copiavel + como verificar (erro #30)
 function copyRun({objetivo, code, verificar}){
@@ -17,6 +23,7 @@ function copyRun({objetivo, code, verificar}){
       </div>`;
 }
 const E = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const svgP = svg => L.svgPanel('purple', svg);
 
 function svgPipe(prefix,label,nodes){
   const w=800; const n=nodes.length; const bw=150; const gap=(w-40-n*bw)/(n-1);
@@ -32,14 +39,52 @@ function svgPipe(prefix,label,nodes){
         </svg>`;
 }
 
+// SVG da rubrica (5 pontos)
+function svgRubric(){ return `        <svg viewBox="0 0 800 170" class="w-full h-auto" role="img" aria-label="A rubrica de 5 pontos para filtrar hooks: específico, lacuna, contrarian, visual e curto; some os pontos e corte abaixo de 4">
+          <defs><pattern id="t3rub-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#c084fc" opacity="0.10"/></pattern></defs>
+          <rect x="0" y="0" width="800" height="170" fill="url(#t3rub-grid)"/>
+          ${[['🎯','Específico',30],['🕳️','Lacuna',180],['🔄','Contrarian',330],['🎬','Visual',480],['⏱️','Curto',630]].map(([e,t,x])=>`<rect x="${x}" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="${x+70}" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">${e}</text><text x="${x+70}" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">${t}</text>`).join('\n          ')}
+          <text x="400" y="30" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">dê 0 ou 1 em cada — corte abaixo de 4/5</text>
+          <text x="400" y="150" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">passou? vira vídeo. não passou? a IA reescreve.</text>
+        </svg>`; }
+
+// SVG anatomia da skill
+function svgSkill(){ return `        <svg viewBox="0 0 800 200" class="w-full h-auto" role="img" aria-label="Anatomia de uma SKILL.md: o cabeçalho com name e description decide quando ativar, e o corpo decide o que a IA faz">
+          <defs>
+            <linearGradient id="t3sk-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+            <filter id="t3sk-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="t3sk-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#c084fc" opacity="0.10"/></pattern>
+          </defs>
+          <rect x="0" y="0" width="800" height="200" fill="url(#t3sk-grid)"/>
+          <g filter="url(#t3sk-glow)"><rect x="40" y="30" width="300" height="60" rx="12" fill="#1a1230" stroke="url(#t3sk-grad)" stroke-width="2"/></g>
+          <text x="190" y="55" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">name + description</text>
+          <text x="190" y="74" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11">QUANDO ativar (os gatilhos)</text>
+          <rect x="40" y="110" width="300" height="60" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.6"/>
+          <text x="190" y="135" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">corpo (instruções)</text>
+          <text x="190" y="154" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11">O QUE fazer (o método)</text>
+          <path d="M340,100 L420,100" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#t3sk-ah)"/>
+          <defs><marker id="t3sk-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"/></marker></defs>
+          <rect x="430" y="55" width="320" height="90" rx="14" fill="#0e2018" stroke="#34d399" stroke-width="2.2"/>
+          <text x="590" y="92" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="14">você diz "gera hooks de X"</text>
+          <text x="590" y="115" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11">→ pacote completo, no seu método</text>
+        </svg>`; }
+
 // ---------- MÓDULO 3-1 ----------
 function mod31(){
   const mod='3-1';
+  const checks=[
+    {id:`modulo-${mod}#q1`, pergunta:'Qual é a "regra de ouro" ao gerar hooks com IA?', options:[
+      {t:'A) Publicar tudo que a IA gerar, sem mexer', e:'A IA erra pra mais (clichê). Publicar tudo derruba a qualidade.'},
+      {t:'B) A IA rascunha em volume; você edita e escolhe', correct:true, e:'Isso. Gere 20-30, filtre com a rubrica, fique com os 3-5 melhores.'},
+      {t:'C) Pedir só 1 hook por vez pra economizar', e:'Volume é a vantagem da IA — peça muitos e filtre.'},
+    ]},
+  ];
   const secs=[
 L.section({n:1,mod,acc,title:'Por que gerar hooks com IA (e a regra de ouro)',inner:
 `${lede(mod,1,'Você já tem 165 hooks e a fórmula. A IA entra pra <strong class="text-purple-400">multiplicar</strong>: gerar dezenas de variações no seu nicho, em segundos. Mas há uma regra de ouro — a IA rascunha, <strong>você edita e escolhe</strong>.')}
-${L.svgPanel(acc, svgPipe('t3m1','Fluxo de geração de hooks com IA: ideia, prompt, lote de variações, filtro humano e hook final', [['Ideia/nicho','o assunto'],['Prompt','o pedido à IA'],['Lote','20-30 variações'],['Filtro','você escolhe'],['Hook final','3 camadas']]))}
+${svgP(svgPipe('t3m1','Fluxo de geração de hooks com IA: ideia, prompt, lote de variações, filtro humano e hook final', [['Ideia/nicho','o assunto'],['Prompt','o pedido à IA'],['Lote','20-30 variações'],['Filtro','você escolhe'],['Hook final','3 camadas']]))}
 ${novo('O que é um "prompt"','Prompt é a instrução que você dá pra IA (ChatGPT, Claude, etc.). Um bom prompt de hook tem: papel ("você é roteirista viral"), contexto (nicho, fórmula), tarefa (quantos hooks, formato) e restrições (curto, específico, sem clichê).')}
+${doDont('Prompt forte',['Define papel ("roteirista de vídeo curto")','Dá a fórmula e os 5 padrões','Exige formato (tabela/CSV) e específico','Proíbe clichê explicitamente'],'Prompt fraco',['"Me dá uns hooks bons"','Sem fórmula nem padrões','Sem formato (resposta vira texto solto)','Sem restrição → vem genérico'])}
 ${alert('A IA erra pra mais','Modelos de IA tendem a soar genéricos ("dicas incríveis"). Por isso o prompt PROÍBE clichê e exige a fórmula + específico. E mesmo assim: você filtra. 30 gerados, 3 prestáveis é um ótimo resultado.')}`}),
 L.section({n:2,mod,acc,title:'Prompt 1 — o Gerador de Hooks',inner:
 `${lede(mod,2,'Cole este prompt no ChatGPT/Claude. Ele gera 20 hooks no seu nicho seguindo a fórmula, em formato de tabela com as 3 camadas. Troque o que está em <code class="text-purple-400">&lt;colchetes&gt;</code>.')}
@@ -76,7 +121,8 @@ Complete as 3 camadas:
 
 Para cada Visual Hook, diga em 1 frase POR QUE ele para o dedo.
 Formato: listas curtas, sem enrolação.`),
-verificar:'Você deve receber 1 frase refinada + 3 visuais + 3 textos. Escolha 1 de cada. Teste mental: o visual escolhido funciona no mudo? O texto cabe num olhar?'})}`}),
+verificar:'Você deve receber 1 frase refinada + 3 visuais + 3 textos. Escolha 1 de cada. Teste mental: o visual escolhido funciona no mudo? O texto cabe num olhar?'})}
+${L.details('purple','Indo mais fundo: como pedir variações sem repetir','<p>Depois da primeira leva, peça: <em>"Agora me dê 5 versões mais ousadas e 5 mais sóbrias da mesma frase, sem repetir verbos de abertura."</em> Restringir o que NÃO repetir (verbos, estrutura) força a IA a explorar ângulos novos em vez de variar só palavras.</p>')}`}),
 L.section({n:4,mod,acc,title:'Prompt 3 — gerar o prompt de IMAGEM do Visual Hook',inner:
 `${lede(mod,4,'O Visual Hook vira imagem. Este prompt produz um prompt de imagem pronto pra colar num gerador (flux2-klein, Midjourney, etc.) — exatamente como as 165 imagens deste curso foram feitas.')}
 ${novo('Por que um prompt gera outro prompt','Geradores de imagem têm uma "língua" própria (estilo, luz, lente, negativos). Pedir pra IA traduzir seu Visual Hook nessa língua poupa tentativa-e-erro e mantém o padrão visual consistente.')}
@@ -102,9 +148,17 @@ Saída em CSV com cabeçalho:
 n,frase_falada,visual_hook,text_hook,padrao
 
 Sem texto fora do CSV. Aspas duplas em campos com vírgula.`),
-verificar:'Salve a saída como .csv e abra numa planilha: deve ter 33 linhas + cabeçalho, 5 padrões representados. Filtre as linhas fracas; sobraram 20+ boas? Ótimo lote.'})}`}),
+verificar:'Salve a saída como .csv e abra numa planilha: deve ter 33 linhas + cabeçalho, 5 padrões representados. Filtre as linhas fracas; sobraram 20+ boas? Ótimo lote.'})}
+${L.compareTable('purple',['Padrão','Gatilho que você pede','Exemplo de Text Hook'],[
+  ['Medo','ameaça, perda, risco','AI Took the Job'],
+  ['Contrarian','contraria uma crença','Not About Speed'],
+  ['Número','cifra/prazo específico','4 Seconds'],
+  ['Prova pessoal','"eu fiz/perdi/dobrei"','Lost 50K'],
+  ['Curiosidade','lacuna aberta','Wrong Question'],
+])}`}),
 L.section({n:6,mod,acc,title:'Filtrar e iterar: a rubrica de 5 pontos',inner:
 `${lede(mod,6,'Gerar é fácil; <strong>escolher</strong> é o trabalho. Use esta rubrica pra dar nota e ficar só com os hooks que merecem virar vídeo.')}
+${svgP(svgRubric())}
 ${concept('Rubrica — dê 0 ou 1 em cada (corte abaixo de 4/5)',null,['<strong>Específico?</strong> tem número/valor/prazo concreto.','<strong>Lacuna?</strong> deixa uma pergunta no ar.','<strong>Contrarian?</strong> contraria uma crença do nicho.','<strong>Visual?</strong> dá pra ver a cena em 1 segundo, no mudo.','<strong>Curto?</strong> frase em ~2s, texto em 2-3 palavras.'])}
 ${copyRun({objetivo:'Fazer a IA pontuar e reescrever os hooks fracos automaticamente.',
 code:E(`Avalie cada hook da lista abaixo com a rubrica (0 ou 1 cada): específico, lacuna, contrarian, visual, curto. Some (0 a 5).
@@ -115,6 +169,7 @@ Devolva: tabela com hook | nota | versão melhorada (quando aplicável).
 LISTA:
 <cole aqui os hooks gerados>`),
 verificar:'Você recebe notas + versões melhoradas. Leve pro próximo módulo (3.2) só os de nota 4-5 — eles viram o seu banco de hooks.'})}
+${L.quiz(checks[0])}
 ${tip('Próximo passo','No Módulo 3.2 você transforma esses prompts num SISTEMA reutilizável — uma skill que faz tudo isso com um comando.')}`}),
   ].join('\n');
   const body=`${L.breadcrumb({acc,trilhaLabel:'Trilha 3',mod})}
@@ -129,22 +184,36 @@ ${L.moduleSummary({acc,points:[
   '<strong class="text-white">Próximo</strong><span class="text-neutral-400"> — virar tudo isso numa skill com um comando só.</span>',
 ],nextLabel:'Módulo 3.2',nextHref:'modulo-3-2.html'})}
   </main>`;
-  return {file:`curso/trilha3/modulo-${mod}.html`,html:L.shell({title:'Prompts para gerar hooks',depth:2,activeTrack:3,accents:['purple'],body})};
+  return {file:`curso/trilha3/modulo-${mod}.html`,html:L.shell({title:'Prompts para gerar hooks',depth:2,activeTrack:3,accents:['purple'],body,extraScript:L.checkScript(checks)})};
 }
 
 // ---------- MÓDULO 3-2 ----------
 function mod32(){
   const mod='3-2';
+  const checks=[
+    {id:`modulo-${mod}#q1`, pergunta:'O que faz uma skill "acender" na hora certa?', options:[
+      {t:'A) O name curto', e:'O name identifica, mas não é o que dispara a ativação.'},
+      {t:'B) A description com os gatilhos reais', correct:true, e:'Isso. A description lista quando usar ("gera hooks de...") — é o que faz a skill ativar no momento certo.'},
+      {t:'C) O tamanho do corpo', e:'O corpo diz O QUE fazer, não QUANDO ativar.'},
+    ]},
+  ];
   const secs=[
 L.section({n:1,mod,acc,title:'De prompt avulso a sistema (sua Hook Machine)',inner:
 `${lede(mod,1,'Prompt avulso resolve um vídeo. Uma <strong class="text-purple-400">skill</strong> (sistema reutilizável) resolve os próximos 100: você dá o nicho, ela devolve hooks + camadas + prompts de imagem, sempre no mesmo padrão.')}
-${L.svgPanel(acc, svgPipe('t3m2','Pipeline da Hook Machine: nicho de entrada, geração, imagens, banco de hooks e publicação', [['Nicho','entrada'],['Gerar','hooks + camadas'],['Imagens','Visual Hook'],['Banco','tagueado'],['Publicar','+ medir']]))}
+${svgP(svgPipe('t3m2','Pipeline da Hook Machine: nicho de entrada, geração, imagens, banco de hooks e publicação', [['Nicho','entrada'],['Gerar','hooks + camadas'],['Imagens','Visual Hook'],['Banco','tagueado'],['Publicar','+ medir']]))}
 ${novo('O que é uma "skill"','No Claude Code (e ferramentas similares), uma skill é uma pasta com um arquivo SKILL.md que descreve QUANDO usá-la e O QUE fazer. Você invoca por um comando e ela roda o processo inteiro — como ter um roteirista de plantão com seu método embutido.')}
-${concept('O que sua Hook Machine entrega',null,['Recebe: um nicho/assunto e o idioma.','Gera: 20-33 hooks na fórmula, agrupados por padrão.','Completa: as 3 camadas de cada hook.','Produz: o prompt de imagem de cada Visual Hook.','Filtra: pontua com a rubrica e corta os fracos.'])}`}),
+${concept('O que sua Hook Machine entrega',null,['Recebe: um nicho/assunto e o idioma.','Gera: 20-33 hooks na fórmula, agrupados por padrão.','Completa: as 3 camadas de cada hook.','Produz: o prompt de imagem de cada Visual Hook.','Filtra: pontua com a rubrica e corta os fracos.'])}
+${L.compareTable('purple',['Prompt avulso','Skill / sistema'],[
+  ['Resolve 1 vídeo','Resolve os próximos 100'],
+  ['Você recola tudo toda vez','Um comando dispara o método'],
+  ['Resultado varia a cada vez','Padrão consistente sempre'],
+])}`}),
 L.section({n:2,mod,acc,title:'Anatomia de uma SKILL.md',inner:
 `${lede(mod,2,'Uma skill é simples: um cabeçalho que diz QUANDO ativar e um corpo que diz COMO agir. Vamos ver as partes antes de colar a sua.')}
+${svgP(svgSkill())}
 ${concept('As partes de uma SKILL.md',null,['<strong>name</strong>: nome curto da skill (ex.: <code>hook-machine</code>).','<strong>description</strong>: quando usar — os gatilhos ("criar hooks", "gerar ganchos virais").','<strong>Corpo (instruções):</strong> o passo a passo que a IA segue — papel, fórmula, formato de saída, rubrica.'])}
-${tip('Regra da boa description','A description é o que faz a skill "acender" na hora certa. Liste gatilhos reais que você diria: "gera hooks pra…", "ganchos virais de…", "ideias de Reels sobre…".')}`}),
+${tip('Regra da boa description','A description é o que faz a skill "acender" na hora certa. Liste gatilhos reais que você diria: "gera hooks pra…", "ganchos virais de…", "ideias de Reels sobre…".')}
+${L.quiz(checks[0])}`}),
 L.section({n:3,mod,acc,title:'SKILL.md pronta pra colar',inner:
 `${lede(mod,3,'Esta é a sua Hook Machine. Crie a pasta <code class="text-purple-400">hook-machine/</code> e dentro dela o arquivo <code class="text-purple-400">SKILL.md</code> com o conteúdo abaixo. Funciona no Claude Code; o corpo também serve como um "system prompt" em qualquer chat.')}
 ${copyRun({objetivo:'Criar uma skill reutilizável que gera o pacote completo de hooks de qualquer nicho.',
@@ -191,7 +260,8 @@ const items=JSON.parse(fs.readFileSync('prompts.json','utf8'));
   const png=await new Promise((ok,no)=>{const r=http.request({host:'localhost',port:8000,path:'/generate',method:'POST',headers:{'Content-Type':'application/json','Content-Length':Buffer.byteLength(payload)}},res=>{let b='';res.on('data',c=>b+=c);res.on('end',()=>ok(Buffer.from(JSON.parse(b).image,'base64')))});r.on('error',no);r.write(payload);r.end();});
   fs.writeFileSync('hook-'+it.n+'.png',png); console.log('ok',it.n);
 }})();`),
-verificar:'Tenha o inemaimg rodando em localhost:8000. Rode "node gen.js": deve criar hook-1.png, hook-2.png… Conte os arquivos == número de prompts.'})}`}),
+verificar:'Tenha o inemaimg rodando em localhost:8000. Rode "node gen.js": deve criar hook-1.png, hook-2.png… Conte os arquivos == número de prompts.'})}
+${L.details('purple','Indo mais fundo: este curso foi feito assim','<p>As 165 imagens da Trilha 2 saíram de um script quase idêntico a esse: leu um JSON com os 165 Visual Hooks, gerou cada PNG no inemaimg (flux2-klein, 4 passos) e comprimiu pra WebP (~23 KB cada). O mesmo pipeline gera o seu pacote.</p>')}`}),
 L.section({n:5,mod,acc,title:'Banco de hooks: reusar, taguear, versionar',inner:
 `${lede(mod,5,'Hook bom não é descartável. Guarde os aprovados num banco — uma planilha ou JSON — pra reusar, remixar e ver o que repete sucesso.')}
 ${concept('Estrutura mínima do banco',null,['<strong>id, nicho, padrão</strong> — pra filtrar depois.','<strong>3 camadas</strong> — frase, visual, texto.','<strong>status</strong> — ideia / gravado / publicado.','<strong>desempenho</strong> — views/retenção quando publicar.'])}
@@ -211,6 +281,11 @@ ${tip('Versionar com Git','Guarde o banco.json num repositório (você aprende i
 L.section({n:6,mod,acc,title:'Publicar e medir: o ciclo que faz você melhorar',inner:
 `${lede(mod,6,'O hook só prova seu valor no campo. Feche o ciclo: teste, meça, dobre no que funciona. É assim que você sai de "copiando hooks" pra "tendo um método".')}
 ${concept('O ciclo de melhoria',null,['<strong>Teste:</strong> grave 2-3 versões do mesmo conteúdo com hooks diferentes.','<strong>Meça:</strong> olhe retenção nos 3s e % que passou de 50% — não só views.','<strong>Aprenda:</strong> qual PADRÃO segurou mais? (medo? número?)','<strong>Dobre:</strong> repita o padrão vencedor no seu nicho.'])}
+${L.compareTable('purple',['Métrica que muita gente olha','Métrica que importa pro hook'],[
+  ['Views totais','Retenção nos 3 primeiros segundos'],
+  ['Curtidas','% que passou de 50% do vídeo'],
+  ['Seguidores','Scroll-stop rate (quem parou de deslizar)'],
+])}
 ${alert('Não confie em 1 vídeo','Um hook pode viralizar por sorte e outro morrer por horário. Olhe a média de 5-10 vídeos por padrão antes de concluir o que funciona pra você.')}
 ${tip('Você terminou o curso 🎉','Você tem: a teoria (Trilha 1), os 165 hooks com imagem (Trilha 2) e o sistema pra gerar os seus (Trilha 3). Agora é publicar, medir e iterar. Marque os módulos como lidos e acompanhe sua jornada no painel do curso.')}`}),
   ].join('\n');
@@ -226,7 +301,7 @@ ${L.moduleSummary({acc,points:[
   '<strong class="text-white">Publicar e medir</strong><span class="text-neutral-400"> — teste 3 hooks, meça retenção, dobre no padrão vencedor.</span>',
 ],nextLabel:'Voltar ao início',nextHref:'../../index.html'})}
   </main>`;
-  return {file:`curso/trilha3/modulo-${mod}.html`,html:L.shell({title:'Sua Hook Machine',depth:2,activeTrack:3,accents:['purple'],body})};
+  return {file:`curso/trilha3/modulo-${mod}.html`,html:L.shell({title:'Sua Hook Machine',depth:2,activeTrack:3,accents:['purple'],body,extraScript:L.checkScript(checks)})};
 }
 
 // ---------- INDEX T3 ----------

@@ -220,6 +220,10 @@
         </svg>
       </div>
       <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? O que é um "prompt"</h3><p class="text-neutral-300 text-sm">Prompt é a instrução que você dá pra IA (ChatGPT, Claude, etc.). Um bom prompt de hook tem: papel ("você é roteirista viral"), contexto (nicho, fórmula), tarefa (quantos hooks, formato) e restrições (curto, específico, sem clichê).</p></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Prompt forte</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Define papel ("roteirista de vídeo curto")</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Dá a fórmula e os 5 padrões</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Exige formato (tabela/CSV) e específico</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Proíbe clichê explicitamente</span></li></ul></div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Prompt fraco</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Me dá uns hooks bons"</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem fórmula nem padrões</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem formato (resposta vira texto solto)</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem restrição → vem genérico</span></li></ul></div>
+      </div>
       <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> A IA erra pra mais</h3><p class="text-neutral-300 text-sm">Modelos de IA tendem a soar genéricos ("dicas incríveis"). Por isso o prompt PROÍBE clichê e exige a fórmula + específico. E mesmo assim: você filtra. 30 gerados, 3 prestáveis é um ótimo resultado.</p></div>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
@@ -283,6 +287,10 @@ Para cada Visual Hook, diga em 1 frase POR QUE ele para o dedo.
 Formato: listas curtas, sem enrolação.</pre>
         <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Você deve receber 1 frase refinada + 3 visuais + 3 textos. Escolha 1 de cada. Teste mental: o visual escolhido funciona no mudo? O texto cabe num olhar?</span></div>
       </div>
+      <details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+        <summary class="cursor-pointer font-semibold text-purple-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: como pedir variações sem repetir</summary>
+        <div class="mt-4 text-neutral-300 text-sm space-y-3"><p>Depois da primeira leva, peça: <em>"Agora me dê 5 versões mais ousadas e 5 mais sóbrias da mesma frase, sem repetir verbos de abertura."</em> Restringir o que NÃO repetir (verbos, estrutura) força a IA a explorar ângulos novos em vez de variar só palavras.</p></div>
+      </details>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
           <span class="inema-read-icon" aria-hidden="true">○</span>
@@ -335,6 +343,12 @@ n,frase_falada,visual_hook,text_hook,padrao
 Sem texto fora do CSV. Aspas duplas em campos com vírgula.</pre>
         <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Salve a saída como .csv e abra numa planilha: deve ter 33 linhas + cabeçalho, 5 padrões representados. Filtre as linhas fracas; sobraram 20+ boas? Ótimo lote.</span></div>
       </div>
+      <div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-dark-700/60 text-purple-400"><tr><th class="px-4 py-3 font-semibold">Padrão</th><th class="px-4 py-3 font-semibold">Gatilho que você pede</th><th class="px-4 py-3 font-semibold">Exemplo de Text Hook</th></tr></thead>
+          <tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Medo</td><td class="px-4 py-3 text-neutral-300">ameaça, perda, risco</td><td class="px-4 py-3 text-neutral-300">AI Took the Job</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Contrarian</td><td class="px-4 py-3 text-neutral-300">contraria uma crença</td><td class="px-4 py-3 text-neutral-300">Not About Speed</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Número</td><td class="px-4 py-3 text-neutral-300">cifra/prazo específico</td><td class="px-4 py-3 text-neutral-300">4 Seconds</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Prova pessoal</td><td class="px-4 py-3 text-neutral-300">"eu fiz/perdi/dobrei"</td><td class="px-4 py-3 text-neutral-300">Lost 50K</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Curiosidade</td><td class="px-4 py-3 text-neutral-300">lacuna aberta</td><td class="px-4 py-3 text-neutral-300">Wrong Question</td></tr></tbody>
+        </table>
+      </div>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
           <span class="inema-read-icon" aria-hidden="true">○</span>
@@ -348,6 +362,19 @@ Sem texto fora do CSV. Aspas duplas em campos com vírgula.</pre>
         <h2 class="text-2xl font-bold">Filtrar e iterar: a rubrica de 5 pontos</h2>
       </div>
       <p data-inema-block="m3-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Gerar é fácil; <strong>escolher</strong> é o trabalho. Use esta rubrica pra dar nota e ficar só com os hooks que merecem virar vídeo.</p>
+      <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+        <svg viewBox="0 0 800 170" class="w-full h-auto" role="img" aria-label="A rubrica de 5 pontos para filtrar hooks: específico, lacuna, contrarian, visual e curto; some os pontos e corte abaixo de 4">
+          <defs><pattern id="t3rub-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#c084fc" opacity="0.10"/></pattern></defs>
+          <rect x="0" y="0" width="800" height="170" fill="url(#t3rub-grid)"/>
+          <rect x="30" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="100" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">🎯</text><text x="100" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">Específico</text>
+          <rect x="180" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="250" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">🕳️</text><text x="250" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">Lacuna</text>
+          <rect x="330" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="400" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">🔄</text><text x="400" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">Contrarian</text>
+          <rect x="480" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="550" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">🎬</text><text x="550" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">Visual</text>
+          <rect x="630" y="45" width="140" height="80" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="700" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="22">⏱️</text><text x="700" y="105" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">Curto</text>
+          <text x="400" y="30" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">dê 0 ou 1 em cada — corte abaixo de 4/5</text>
+          <text x="400" y="150" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">passou? vira vídeo. não passou? a IA reescreve.</text>
+        </svg>
+      </div>
       <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Rubrica — dê 0 ou 1 em cada (corte abaixo de 4/5)</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Específico?</strong> tem número/valor/prazo concreto.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Lacuna?</strong> deixa uma pergunta no ar.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Contrarian?</strong> contraria uma crença do nicho.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Visual?</strong> dá pra ver a cena em 1 segundo, no mudo.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Curto?</strong> frase em ~2s, texto em 2-3 palavras.</span></li></ul></div>
       <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
         <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Fazer a IA pontuar e reescrever os hooks fracos automaticamente.</span></div>
@@ -359,6 +386,16 @@ Devolva: tabela com hook | nota | versão melhorada (quando aplicável).
 LISTA:
 &lt;cole aqui os hooks gerados&gt;</pre>
         <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Você recebe notas + versões melhoradas. Leve pro próximo módulo (3.2) só os de nota 4-5 — eles viram o seu banco de hooks.</span></div>
+      </div>
+      <div data-inema-check="modulo-3-1#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
+        <p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Checagem rápida <span class="text-xs text-neutral-500 font-normal">(opcional, não trava o avanço)</span></p>
+        <p class="text-neutral-300 text-sm mb-4">Qual é a "regra de ouro" ao gerar hooks com IA?</p>
+        <div class="inema-check-options space-y-2">
+          <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">A) Publicar tudo que a IA gerar, sem mexer</button>
+          <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">B) A IA rascunha em volume; você edita e escolhe</button>
+          <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">C) Pedir só 1 hook por vez pra economizar</button>
+        </div>
+        <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
       </div>
       <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Próximo passo</h3><p class="text-neutral-300 text-sm">No Módulo 3.2 você transforma esses prompts num SISTEMA reutilizável — uma skill que faz tudo isso com um comando.</p></div>
       <div class="flex justify-start mt-6">
@@ -421,6 +458,13 @@ LISTA:
   <script src="../../assets/learn.js"></script>
   <script>
     if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck("modulo-3-1#q1", { answer: 1, explain: {"0":"A IA erra pra mais (clichê). Publicar tudo derruba a qualidade.","1":"Isso. Gere 20-30, filtre com a rubrica, fique com os 3-5 melhores.","2":"Volume é a vantagem da IA — peça muitos e filtre."} });
+      }
+    });
   </script>
 </body>
 </html>

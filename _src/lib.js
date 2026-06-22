@@ -243,7 +243,7 @@ function scripts(depth) {
 }
 
 // Monta a pagina completa.
-function shell({ title, depth, activeTrack, accents, body }) {
+function shell({ title, depth, activeTrack, accents, body, extraScript = '' }) {
   const cssLink = depth === 0 ? 'assets/learn.css' : '../../assets/learn.css';
   return `<!DOCTYPE html>
 <html lang="pt-BR" class="dark">
@@ -280,9 +280,66 @@ ${body}
 ${footer()}
 
 ${scripts(depth)}
+${extraScript}
 </body>
 </html>
 `;
+}
+
+// ---------- Helpers de profundidade (T1/T3) ----------
+// "Indo mais fundo" — divulgacao progressiva
+function details(acc, summary, html) {
+  return `      <details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+        <summary class="cursor-pointer font-semibold text-${acc}-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> ${summary}</summary>
+        <div class="mt-4 text-neutral-300 text-sm space-y-3">${html}</div>
+      </details>`;
+}
+// Tabela comparativa
+function compareTable(acc, headers, rows) {
+  return `      <div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-dark-700/60 text-${acc}-400"><tr>${headers.map(h=>`<th class="px-4 py-3 font-semibold">${h}</th>`).join('')}</tr></thead>
+          <tbody class="divide-y divide-dark-600">${rows.map(r=>`<tr class="bg-dark-800">${r.map((c,i)=>`<td class="px-4 py-3 ${i===0?'font-medium text-neutral-100':'text-neutral-300'}">${c}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+}
+// Exemplo trabalhado (hook desmontado nas 3 camadas)
+function worked(acc, titulo, falada, visual, texto, nota) {
+  return `      <div class="bg-dark-800 rounded-xl border border-${acc}-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-${acc}-900/20 border-b border-${acc}-500/30"><span class="text-${acc}-400 font-semibold text-sm">🔬 ${titulo}</span></div>
+        <div class="p-5 space-y-2 font-mono text-sm">
+          <p class="text-neutral-200"><span class="text-${acc}-400">💬 Falada:</span> ${falada}</p>
+          <p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> ${visual}</p>
+          <p class="text-neutral-200"><span class="text-primary">🔤 Texto:</span> ${texto}</p>
+        </div>
+        ${nota?`<div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">${nota}</div>`:''}</div>`;
+}
+// Checagem leve (quiz nao-bloqueante). options: array de strings; correct: indice; explain: array paralelo
+function quiz({ id, pergunta, options }) {
+  const opts = options.map((o,i)=>`          <button type="button" data-inema-check-option="${i}" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">${o.t}</button>`).join('\n');
+  return `      <div data-inema-check="${id}" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
+        <p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Checagem rápida <span class="text-xs text-neutral-500 font-normal">(opcional, não trava o avanço)</span></p>
+        <p class="text-neutral-300 text-sm mb-4">${pergunta}</p>
+        <div class="inema-check-options space-y-2">
+${opts}
+        </div>
+        <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+      </div>`;
+}
+// Gera o script de registro das checagens da pagina (vai em extraScript do shell)
+function checkScript(checks) {
+  if (!checks.length) return '';
+  const body = checks.map(c => {
+    const explain = JSON.stringify(c.options.reduce((a,o,i)=>{a[i]=o.e;return a;},{}));
+    return `      INEMA.registerCheck(${JSON.stringify(c.id)}, { answer: ${c.options.findIndex(o=>o.correct)}, explain: ${explain} });`;
+  }).join('\n');
+  return `  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && INEMA.registerCheck) {
+${body}
+      }
+    });
+  </script>`;
 }
 
 // ---------- Helpers de conteudo ----------
@@ -437,4 +494,5 @@ module.exports = {
   COURSE, TRILHAS, ACCENTS, MANIFEST,
   shell, nav, footer, scripts, readToggle, section, svgPanel, accordion,
   moduleCard, modal, trilhaHeader, moduleHeader, breadcrumb, moduleSummary,
+  details, compareTable, worked, quiz, checkScript,
 };

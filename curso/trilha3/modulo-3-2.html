@@ -221,6 +221,12 @@
       </div>
       <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? O que é uma "skill"</h3><p class="text-neutral-300 text-sm">No Claude Code (e ferramentas similares), uma skill é uma pasta com um arquivo SKILL.md que descreve QUANDO usá-la e O QUE fazer. Você invoca por um comando e ela roda o processo inteiro — como ter um roteirista de plantão com seu método embutido.</p></div>
       <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> O que sua Hook Machine entrega</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Recebe: um nicho/assunto e o idioma.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Gera: 20-33 hooks na fórmula, agrupados por padrão.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Completa: as 3 camadas de cada hook.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Produz: o prompt de imagem de cada Visual Hook.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Filtra: pontua com a rubrica e corta os fracos.</span></li></ul></div>
+      <div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-dark-700/60 text-purple-400"><tr><th class="px-4 py-3 font-semibold">Prompt avulso</th><th class="px-4 py-3 font-semibold">Skill / sistema</th></tr></thead>
+          <tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Resolve 1 vídeo</td><td class="px-4 py-3 text-neutral-300">Resolve os próximos 100</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Você recola tudo toda vez</td><td class="px-4 py-3 text-neutral-300">Um comando dispara o método</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Resultado varia a cada vez</td><td class="px-4 py-3 text-neutral-300">Padrão consistente sempre</td></tr></tbody>
+        </table>
+      </div>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
           <span class="inema-read-icon" aria-hidden="true">○</span>
@@ -234,8 +240,39 @@
         <h2 class="text-2xl font-bold">Anatomia de uma SKILL.md</h2>
       </div>
       <p data-inema-block="m3-2-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Uma skill é simples: um cabeçalho que diz QUANDO ativar e um corpo que diz COMO agir. Vamos ver as partes antes de colar a sua.</p>
+      <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+        <svg viewBox="0 0 800 200" class="w-full h-auto" role="img" aria-label="Anatomia de uma SKILL.md: o cabeçalho com name e description decide quando ativar, e o corpo decide o que a IA faz">
+          <defs>
+            <linearGradient id="t3sk-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+            <filter id="t3sk-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="t3sk-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#c084fc" opacity="0.10"/></pattern>
+          </defs>
+          <rect x="0" y="0" width="800" height="200" fill="url(#t3sk-grid)"/>
+          <g filter="url(#t3sk-glow)"><rect x="40" y="30" width="300" height="60" rx="12" fill="#1a1230" stroke="url(#t3sk-grad)" stroke-width="2"/></g>
+          <text x="190" y="55" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">name + description</text>
+          <text x="190" y="74" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11">QUANDO ativar (os gatilhos)</text>
+          <rect x="40" y="110" width="300" height="60" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.6"/>
+          <text x="190" y="135" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="13">corpo (instruções)</text>
+          <text x="190" y="154" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11">O QUE fazer (o método)</text>
+          <path d="M340,100 L420,100" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#t3sk-ah)"/>
+          <defs><marker id="t3sk-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"/></marker></defs>
+          <rect x="430" y="55" width="320" height="90" rx="14" fill="#0e2018" stroke="#34d399" stroke-width="2.2"/>
+          <text x="590" y="92" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="14">você diz "gera hooks de X"</text>
+          <text x="590" y="115" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11">→ pacote completo, no seu método</text>
+        </svg>
+      </div>
       <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> As partes de uma SKILL.md</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>name</strong>: nome curto da skill (ex.: <code>hook-machine</code>).</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>description</strong>: quando usar — os gatilhos ("criar hooks", "gerar ganchos virais").</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Corpo (instruções):</strong> o passo a passo que a IA segue — papel, fórmula, formato de saída, rubrica.</span></li></ul></div>
       <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Regra da boa description</h3><p class="text-neutral-300 text-sm">A description é o que faz a skill "acender" na hora certa. Liste gatilhos reais que você diria: "gera hooks pra…", "ganchos virais de…", "ideias de Reels sobre…".</p></div>
+      <div data-inema-check="modulo-3-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
+        <p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Checagem rápida <span class="text-xs text-neutral-500 font-normal">(opcional, não trava o avanço)</span></p>
+        <p class="text-neutral-300 text-sm mb-4">O que faz uma skill "acender" na hora certa?</p>
+        <div class="inema-check-options space-y-2">
+          <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">A) O name curto</button>
+          <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">B) A description com os gatilhos reais</button>
+          <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">C) O tamanho do corpo</button>
+        </div>
+        <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+      </div>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
           <span class="inema-read-icon" aria-hidden="true">○</span>
@@ -309,6 +346,10 @@ const items=JSON.parse(fs.readFileSync('prompts.json','utf8'));
 }})();</pre>
         <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Tenha o inemaimg rodando em localhost:8000. Rode "node gen.js": deve criar hook-1.png, hook-2.png… Conte os arquivos == número de prompts.</span></div>
       </div>
+      <details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+        <summary class="cursor-pointer font-semibold text-purple-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: este curso foi feito assim</summary>
+        <div class="mt-4 text-neutral-300 text-sm space-y-3"><p>As 165 imagens da Trilha 2 saíram de um script quase idêntico a esse: leu um JSON com os 165 Visual Hooks, gerou cada PNG no inemaimg (flux2-klein, 4 passos) e comprimiu pra WebP (~23 KB cada). O mesmo pipeline gera o seu pacote.</p></div>
+      </details>
       <div class="flex justify-start mt-6">
         <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
           <span class="inema-read-icon" aria-hidden="true">○</span>
@@ -352,6 +393,12 @@ const items=JSON.parse(fs.readFileSync('prompts.json','utf8'));
       </div>
       <p data-inema-block="m3-2-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">O hook só prova seu valor no campo. Feche o ciclo: teste, meça, dobre no que funciona. É assim que você sai de "copiando hooks" pra "tendo um método".</p>
       <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> O ciclo de melhoria</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Teste:</strong> grave 2-3 versões do mesmo conteúdo com hooks diferentes.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Meça:</strong> olhe retenção nos 3s e % que passou de 50% — não só views.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Aprenda:</strong> qual PADRÃO segurou mais? (medo? número?)</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Dobre:</strong> repita o padrão vencedor no seu nicho.</span></li></ul></div>
+      <div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-dark-700/60 text-purple-400"><tr><th class="px-4 py-3 font-semibold">Métrica que muita gente olha</th><th class="px-4 py-3 font-semibold">Métrica que importa pro hook</th></tr></thead>
+          <tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Views totais</td><td class="px-4 py-3 text-neutral-300">Retenção nos 3 primeiros segundos</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Curtidas</td><td class="px-4 py-3 text-neutral-300">% que passou de 50% do vídeo</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Seguidores</td><td class="px-4 py-3 text-neutral-300">Scroll-stop rate (quem parou de deslizar)</td></tr></tbody>
+        </table>
+      </div>
       <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> Não confie em 1 vídeo</h3><p class="text-neutral-300 text-sm">Um hook pode viralizar por sorte e outro morrer por horário. Olhe a média de 5-10 vídeos por padrão antes de concluir o que funciona pra você.</p></div>
       <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Você terminou o curso 🎉</h3><p class="text-neutral-300 text-sm">Você tem: a teoria (Trilha 1), os 165 hooks com imagem (Trilha 2) e o sistema pra gerar os seus (Trilha 3). Agora é publicar, medir e iterar. Marque os módulos como lidos e acompanhe sua jornada no painel do curso.</p></div>
       <div class="flex justify-start mt-6">
@@ -414,6 +461,13 @@ const items=JSON.parse(fs.readFileSync('prompts.json','utf8'));
   <script src="../../assets/learn.js"></script>
   <script>
     if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck("modulo-3-2#q1", { answer: 1, explain: {"0":"O name identifica, mas não é o que dispara a ativação.","1":"Isso. A description lista quando usar (\"gera hooks de...\") — é o que faz a skill ativar no momento certo.","2":"O corpo diz O QUE fazer, não QUANDO ativar."} });
+      }
+    });
   </script>
 </body>
 </html>

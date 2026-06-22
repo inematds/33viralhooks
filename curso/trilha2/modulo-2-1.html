@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="viralhooks">
+  <title>AI & Technology — 33 Hooks | 33 Viral Hooks</title>
+
+  <!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+
+  <!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+  <script type="application/json" data-inema-manifest>
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento blue */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🪝</span>
+            <span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" aria-label="Alternar tema claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
+      <span class="text-blue-400">Módulo 2.1</span>
+    </div>
+  </nav>
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 AI & Technology</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Os 33 viral hooks de AI & Technology, com frase falada, visual e texto na tela — agrupados pelos 5 padrões que travam o scroll.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">33</div>
+          <div class="text-xs text-neutral-400">Hooks</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Seções</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">~25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="2-1" data-inema-track="2">
+    <section id="topico-1" data-inema-topic="modulo-2-1#topico-1" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">Como AI & Technology prende a atenção</h2>
+      </div>
+      <p data-inema-block="m2-1-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Vender futuro e medo do futuro. O público quer não ficar pra trás — então o hook entrega ameaça ("vai te substituir"), espanto ("fez em 4 segundos") ou bastidor proibido ("o que ninguém percebeu").</p>
+      <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+        <svg viewBox="0 0 800 200" class="w-full h-auto" role="img" aria-label="Fórmula do hook em 3 passos: Context Lean (contexto mínimo), Scroll Stop (a cena que trava o dedo) e Contrarian Snapback (a virada que segura até o fim)">
+          <defs>
+            <linearGradient id="f1-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+            <filter id="f1-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="f1-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#60a5fa" opacity="0.10"/></pattern>
+            <marker id="f1-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"/></marker>
+          </defs>
+          <rect x="0" y="0" width="800" height="200" fill="url(#f1-grid)"/>
+          <g fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6">
+            <path class="wf-a" d="M250,100 L290,100" marker-end="url(#f1-ah)"/>
+            <path class="wf-a" d="M510,100 L550,100" marker-end="url(#f1-ah)"/>
+          </g>
+          <rect x="40" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f1-grad)" stroke-width="2"/>
+          <text x="145" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">1 · Context Lean</text>
+          <text x="145" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">contexto mínimo, zero rodeio</text>
+          <g filter="url(#f1-glow)"><rect x="295" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f1-grad)" stroke-width="2.4"/></g>
+          <text x="400" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">2 · Scroll Stop</text>
+          <text x="400" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">a cena que trava o dedo</text>
+          <rect x="550" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f1-grad)" stroke-width="2"/>
+          <text x="655" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">3 · Contrarian Snapback</text>
+          <text x="655" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">a virada que segura até o fim</text>
+          <text x="145" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que falar</text>
+          <text x="400" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que mostrar</text>
+          <text x="655" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que prometer</text>
+        </svg>
+      </div>
+      <p class="text-neutral-400 text-sm mb-2 text-center">A fórmula do PDF — <strong class="text-blue-400">Context Lean → Scroll Stop → Contrarian Snapback</strong> — aplicada aos 33 hooks deste nicho.</p>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mt-6">
+        <h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Como ler cada card</h3>
+        <p data-inema-block="m2-1-t1-p2" class="text-neutral-300 text-sm">Cada hook abaixo traz as <strong>3 camadas</strong> empilhadas: a <strong>frase falada</strong> (em inglês, pronta pra usar ou adaptar), a tradução PT-BR, o <strong>🎬 Visual</strong> (o que mostrar) e o badge azul com o <strong>Text Hook</strong> (o texto curto na tela). A imagem é uma referência visual gerada pra cada exemplo.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">💬</div><div class="text-sm font-semibold text-blue-400">Frase falada</div><p class="text-xs text-neutral-400 mt-1">a linha que você narra/escreve</p></div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎬</div><div class="text-sm font-semibold text-blue-400">Visual Hook</div><p class="text-xs text-neutral-400 mt-1">a cena que aparece na tela</p></div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🔤</div><div class="text-sm font-semibold text-blue-400">Text Hook</div><p class="text-xs text-neutral-400 mt-1">o overlay curto de 2-3 palavras</p></div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-2" data-inema-topic="modulo-2-1#topico-2" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⚠️ Medo & alta aposta</h2>
+      </div>
+      <p data-inema-block="m2-1-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Ameaça, perda ou risco. O cérebro não consegue ignorar o que parece perigoso — é o "scroll stop" mais primitivo. Funciona quando há algo a perder. <span class="text-blue-400 font-semibold">8 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-01.webp" alt="Hook 1 — Empty office chair, computer screen with “Position Closed” notice. (texto na tela: AI Took the Job)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#01</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Took the Job</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just replaced this $200,000 job… but that's not the shocking part.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA acabou de substituir um cargo de US$200 mil… mas o chocante não é isso.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Empty office chair, computer screen with “Position Closed” notice.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-06.webp" alt="Hook 6 — Humanoid robot smiling, red warning light flashing. (texto na tela: Robot Lied)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#06</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Robot Lied</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This robot just learned to lie — here's why it matters.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse robô aprendeu a mentir — e aqui está por que isso importa.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Humanoid robot smiling, red warning light flashing.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-09.webp" alt="Hook 9 — Empty photo frame, as if a memory was removed. (texto na tela: AI Took This)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#09</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Took This</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Everyone fears AI will take their job… but it's already taken something more valuable.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Todos temem perder o emprego pra IA… mas ela já tomou algo mais valioso.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Empty photo frame, as if a memory was removed.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-10.webp" alt="Hook 10 — Judge's gavel slamming next to AI logo. (texto na tela: AI Passed Law)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#10</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Passed Law</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just passed the bar exam — here's why that's terrifying.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA passou no exame da OAB — e por que isso é assustador.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Judge's gavel slamming next to AI logo.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-23.webp" alt="Hook 23 — Chat window with dangerous suggestion + red alert overlay. (texto na tela: AI Persuaded)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#23</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Persuaded</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This chatbot convinced a human to break the law.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse chatbot convenceu um humano a infringir a lei.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Chat window with dangerous suggestion + red alert overlay.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-28.webp" alt="Hook 28 — Silhouette figure controlling a network of robots. (texto na tela: Who Controls AI)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#28</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Who Controls AI</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people fear AI… I fear the people controlling it.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria teme a IA… eu temo quem a controla.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Silhouette figure controlling a network of robots.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-32.webp" alt="Hook 32 — Countdown clock labeled “Next Update”. (texto na tela: What's Next)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#32</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">What's Next</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“The scariest thing about AI isn't what it can do… it's what it will do next.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> O mais assustador da IA não é o que ela faz… é o que ela fará a seguir.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Countdown clock labeled “Next Update”.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-33.webp" alt="Hook 33 — Office desk clearing itself while AI completes the work. (texto na tela: Irrelevant Soon)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#33</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Irrelevant Soon</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This new AI won't replace you… it'll make you irrelevant.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa nova IA não vai te substituir… vai te tornar irrelevante.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Office desk clearing itself while AI completes the work.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-3" data-inema-topic="modulo-2-1#topico-3" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔄 Contrarian & quebra de crença</h2>
+      </div>
+      <p data-inema-block="m2-1-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">O "Contrarian Snapback": começa concordando com o senso comum e vira a mesa ("…não é"). A tensão entre o que a pessoa acredita e o que você afirma prende até a resposta aparecer. <span class="text-blue-400 font-semibold">9 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-02.webp" alt="Hook 2 — ChatGPT window, rapid typing, screen fades to black. (texto na tela: Wrong Question)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#02</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Wrong Question</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Everyone's asking ChatGPT the wrong question — here's the one that changes everything.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Todo mundo faz a pergunta errada pro ChatGPT — esta aqui muda tudo.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> ChatGPT window, rapid typing, screen fades to black.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-05.webp" alt="Hook 5 — Hyper-speed code animation, then abrupt freeze frame. (texto na tela: Not About Speed)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#05</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Not About Speed</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people think AI is about speed… it's not.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria acha que IA é sobre velocidade… não é.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Hyper-speed code animation, then abrupt freeze frame.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-12.webp" alt="Hook 12 — AI-generated painting forming in real-time. (texto na tela: AI Creates)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#12</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Creates</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You think AI can't be creative? Watch this.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Acha que IA não cria? Olha isso.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> AI-generated painting forming in real-time.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-15.webp" alt="Hook 15 — Music software waveform + person in shock with headphones. (texto na tela: AI Music)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#15</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Music</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just made the best music you've never heard.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA fez a melhor música que você nunca ouviu.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Music software waveform + person in shock with headphones.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-17.webp" alt="Hook 17 — Analog clock morphing into a digital countdown. (texto na tela: Buy Time)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#17</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Buy Time</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people are using AI to save time. I'm using it to buy time.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria usa IA pra economizar tempo. Eu uso pra comprar tempo.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Analog clock morphing into a digital countdown.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-18.webp" alt="Hook 18 — Abstract dream imagery forming into a finished artwork. (texto na tela: Dreamed by AI)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#18</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Dreamed by AI</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This AI art isn't drawn — it's dreamed.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa arte de IA não é desenhada — é sonhada.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Abstract dream imagery forming into a finished artwork.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-19.webp" alt="Hook 19 — Phone camera labeling objects in real-time. (texto na tela: AI in Your Pocket)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#19</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI in Your Pocket</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your phone already has AI smarter than you think.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Seu celular já tem uma IA mais esperta do que você imagina.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Phone camera labeling objects in real-time.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-24.webp" alt="Hook 24 — AI interface giving biased commands. (texto na tela: Not Neutral)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#24</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Not Neutral</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You've been told AI is neutral… it's not.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Disseram que a IA é neutra… não é.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> AI interface giving biased commands.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-25.webp" alt="Hook 25 — Real lab footage of working humanoid robots. (texto na tela: It's Real)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#25</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">It's Real</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This isn't science fiction — it's happening right now.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Isso não é ficção científica — está acontecendo agora.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Real lab footage of working humanoid robots.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-4" data-inema-topic="modulo-2-1#topico-4" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔢 Número & especificidade</h2>
+      </div>
+      <p data-inema-block="m2-1-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">Cifras, prazos e quantidades exatas ($10.000, 4 segundos, 30 dias). O específico soa verdadeiro e mensurável — o cérebro confia mais em número do que em adjetivo. <span class="text-blue-400 font-semibold">4 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-03.webp" alt="Hook 3 — Split screen — left side ChatGPT, right side ultra-futuristic UI. (texto na tela: Next Gen AI)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#03</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Next Gen AI</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This new AI tool makes ChatGPT look like Windows 95.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa nova IA faz o ChatGPT parecer Windows 95.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Split screen — left side ChatGPT, right side ultra-futuristic UI.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-04.webp" alt="Hook 4 — Countdown timer from 4 seconds, then dramatic reveal. (texto na tela: 4 Seconds)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#04</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">4 Seconds</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I asked AI to do the impossible… it did it in 4 seconds.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Pedi o impossível pra IA… ela fez em 4 segundos.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Countdown timer from 4 seconds, then dramatic reveal.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-11.webp" alt="Hook 11 — Audio waveform shifting from one voice to another. (texto na tela: Voice Cloning)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#11</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Voice Cloning</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This tool can clone your voice in 3 seconds — and that's the smallest thing it can do.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa ferramenta clona sua voz em 3 segundos — e isso é o de menos.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Audio waveform shifting from one voice to another.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-29.webp" alt="Hook 29 — 3D model of a never-seen-before device. (texto na tela: AI Invented)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#29</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Invented</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just designed a product humans couldn't invent in 50 years.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA projetou um produto que humanos não inventariam em 50 anos.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> 3D model of a never-seen-before device.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-5" data-inema-topic="modulo-2-1#topico-5" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🏆 Prova pessoal & resultado</h2>
+      </div>
+      <p data-inema-block="m2-1-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">Primeira pessoa, resultado concreto ("Eu fiz / perdi / dobrei"). História real ativa identificação e curiosidade: "como ELE conseguiu?". <span class="text-blue-400 font-semibold">3 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-13.webp" alt="Hook 13 — Rapid montage — website, logo, product, ads. (texto na tela: AI Built It)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#13</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Built It</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just built an entire business in one afternoon.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA construiu um negócio inteiro numa tarde.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Rapid montage — website, logo, product, ads.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-26.webp" alt="Hook 26 — Sleeping person + monitor with their AI double working. (texto na tela: AI Clone)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#26</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Clone</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I made an AI clone of myself… now it's working while I sleep.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Fiz um clone de IA de mim mesmo… agora ele trabalha enquanto durmo.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Sleeping person + monitor with their AI double working.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-31.webp" alt="Hook 31 — Chat window showing a detailed life plan, user in shock. (texto na tela: Life Plan by AI)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#31</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Life Plan by AI</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I asked AI for life advice… and it gave me a plan better than my therapist's.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Pedi conselho de vida pra IA… e o plano foi melhor que o do meu terapeuta.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Chat window showing a detailed life plan, user in shock.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-6" data-inema-topic="modulo-2-1#topico-6" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧲 Curiosidade & loop aberto</h2>
+      </div>
+      <p data-inema-block="m2-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Abre uma lacuna de informação e segura a resposta ("isto", "aqui está o que…"). O loop aberto cria coceira mental: o espectador fica pra fechar o ciclo. <span class="text-blue-400 font-semibold">9 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-07.webp" alt="Hook 7 — Screen typing out user's input before they type it. (texto na tela: AI Predicted You)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#07</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Predicted You</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI didn't just write this… it predicted what you'll do next.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA não só escreveu isso… ela previu o que você vai fazer depois.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Screen typing out user's input before they type it.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-08.webp" alt="Hook 8 — Brain scan animation with live thought text overlay. (texto na tela: Mind Reading AI)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#08</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Mind Reading AI</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This app reads your mind — literally.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse app lê a sua mente — literalmente.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Brain scan animation with live thought text overlay.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-14.webp" alt="Hook 14 — Predictive graph perfectly matching real events. (texto na tela: AI Future)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#14</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Future</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This software can see the future — and it's accurate.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse software vê o futuro — e acerta.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Predictive graph perfectly matching real events.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-16.webp" alt="Hook 16 — Side-by-side speed meter — brain vs AI chip. (texto na tela: Faster Than You)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#16</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Faster Than You</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This machine learns faster than your brain — and it's getting faster.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa máquina aprende mais rápido que seu cérebro — e está acelerando.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Side-by-side speed meter — brain vs AI chip.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-20.webp" alt="Hook 20 — Memory reel blending real and generated clips. (texto na tela: Fake Memories)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#20</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Fake Memories</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI can now create fake memories — and you can't tell the difference.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA já cria memórias falsas — e você não distingue.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Memory reel blending real and generated clips.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-21.webp" alt="Hook 21 — Auto-generated code with “10/10” rating badge. (texto na tela: AI Codes)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#21</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">AI Codes</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This program writes better code than most engineers.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse programa escreve código melhor que a maioria dos engenheiros.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Auto-generated code with “10/10” rating badge.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-22.webp" alt="Hook 22 — Chat conversation where the human doesn't realize it's AI. (texto na tela: Passed Turing)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#22</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Passed Turing</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“AI just passed the Turing Test — but no one noticed.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A IA passou no Teste de Turing — e ninguém percebeu.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Chat conversation where the human doesn't realize it's AI.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-27.webp" alt="Hook 27 — Robot whispering into a person's ear. (texto na tela: Robot Remembers)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#27</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Robot Remembers</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This robot doesn't just talk — it remembers your secrets.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse robô não só conversa — ele lembra dos seus segredos.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Robot whispering into a person's ear.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/ai-technology/hook-30.webp" alt="Hook 30 — Face swap happening in real-time on a video call. (texto na tela: Live Deepfake)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#30</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Live Deepfake</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This tool can deepfake anyone — even live on Zoom.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa ferramenta faz deepfake de qualquer um — até ao vivo no Zoom.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Face swap happening in real-time on a video call.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do módulo</h2>
+        <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">33 hooks prontos</strong><span class="text-neutral-400"> de AI & Technology, cada um com frase falada, visual e texto na tela.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">5 padrões virais</strong><span class="text-neutral-400"> mapeados: medo, contrarian, número, prova pessoal e curiosidade.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">A fórmula aplicada</strong><span class="text-neutral-400"> — Context Lean → Scroll Stop → Contrarian Snapback — vista em exemplos reais.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Próximo passo</strong><span class="text-neutral-400"> — leve um desses hooks pra Trilha 3 e gere variações com IA.</span></div></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a trilha</a>
+        <a href="modulo-2-2.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo nicho →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>33 Viral Hooks - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+</body>
+</html>

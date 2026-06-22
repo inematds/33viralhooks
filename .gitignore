@@ -1,0 +1,6 @@
+# Internos de build (não publicar)
+_src/source.pdf
+_src/shots/
+_src/*.log
+*.tmp
+.DS_Store

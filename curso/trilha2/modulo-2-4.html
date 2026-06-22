@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="viralhooks">
+  <title>Autodesenvolvimento & Produtividade — 33 Hooks | 33 Viral Hooks</title>
+
+  <!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+
+  <!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+  <script type="application/json" data-inema-manifest>
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento blue */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🪝</span>
+            <span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" aria-label="Alternar tema claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
+      <span class="text-blue-400">Módulo 2.4</span>
+    </div>
+  </nav>
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.4</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 Autodesenvolvimento & Produtividade</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Os 33 viral hooks de Autodesenvolvimento & Produtividade, com frase falada, visual e texto na tela — agrupados pelos 5 padrões que travam o scroll.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">33</div>
+          <div class="text-xs text-neutral-400">Hooks</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Seções</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">~25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="2-4" data-inema-track="2">
+    <section id="topico-1" data-inema-topic="modulo-2-4#topico-1" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">Como Autodesenvolvimento & Produtividade prende a atenção</h2>
+      </div>
+      <p data-inema-block="m2-4-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Vender controle e clareza. O público se sente travado/disperso — o hook reposiciona o problema ("não é motivação, é isto") e promete sistema simples ("recuperei 3 horas por dia").</p>
+      <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+        <svg viewBox="0 0 800 200" class="w-full h-auto" role="img" aria-label="Fórmula do hook em 3 passos: Context Lean (contexto mínimo), Scroll Stop (a cena que trava o dedo) e Contrarian Snapback (a virada que segura até o fim)">
+          <defs>
+            <linearGradient id="f4-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+            <filter id="f4-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="f4-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#60a5fa" opacity="0.10"/></pattern>
+            <marker id="f4-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"/></marker>
+          </defs>
+          <rect x="0" y="0" width="800" height="200" fill="url(#f4-grid)"/>
+          <g fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6">
+            <path class="wf-a" d="M250,100 L290,100" marker-end="url(#f4-ah)"/>
+            <path class="wf-a" d="M510,100 L550,100" marker-end="url(#f4-ah)"/>
+          </g>
+          <rect x="40" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f4-grad)" stroke-width="2"/>
+          <text x="145" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">1 · Context Lean</text>
+          <text x="145" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">contexto mínimo, zero rodeio</text>
+          <g filter="url(#f4-glow)"><rect x="295" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f4-grad)" stroke-width="2.4"/></g>
+          <text x="400" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">2 · Scroll Stop</text>
+          <text x="400" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">a cena que trava o dedo</text>
+          <rect x="550" y="60" width="210" height="80" rx="14" fill="#0e1622" stroke="url(#f4-grad)" stroke-width="2"/>
+          <text x="655" y="92" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="14">3 · Contrarian Snapback</text>
+          <text x="655" y="112" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11">a virada que segura até o fim</text>
+          <text x="145" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que falar</text>
+          <text x="400" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que mostrar</text>
+          <text x="655" y="40" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o que prometer</text>
+        </svg>
+      </div>
+      <p class="text-neutral-400 text-sm mb-2 text-center">A fórmula do PDF — <strong class="text-blue-400">Context Lean → Scroll Stop → Contrarian Snapback</strong> — aplicada aos 33 hooks deste nicho.</p>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mt-6">
+        <h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Como ler cada card</h3>
+        <p data-inema-block="m2-4-t1-p2" class="text-neutral-300 text-sm">Cada hook abaixo traz as <strong>3 camadas</strong> empilhadas: a <strong>frase falada</strong> (em inglês, pronta pra usar ou adaptar), a tradução PT-BR, o <strong>🎬 Visual</strong> (o que mostrar) e o badge azul com o <strong>Text Hook</strong> (o texto curto na tela). A imagem é uma referência visual gerada pra cada exemplo.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">💬</div><div class="text-sm font-semibold text-blue-400">Frase falada</div><p class="text-xs text-neutral-400 mt-1">a linha que você narra/escreve</p></div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎬</div><div class="text-sm font-semibold text-blue-400">Visual Hook</div><p class="text-xs text-neutral-400 mt-1">a cena que aparece na tela</p></div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🔤</div><div class="text-sm font-semibold text-blue-400">Text Hook</div><p class="text-xs text-neutral-400 mt-1">o overlay curto de 2-3 palavras</p></div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-2" data-inema-topic="modulo-2-4#topico-2" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⚠️ Medo & alta aposta</h2>
+      </div>
+      <p data-inema-block="m2-4-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Ameaça, perda ou risco. O cérebro não consegue ignorar o que parece perigoso — é o "scroll stop" mais primitivo. Funciona quando há algo a perder. <span class="text-blue-400 font-semibold">3 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-12.webp" alt="Hook 12 — Phone buzzing next to laptop, hand flipping it face-down. (texto na tela: Focus Killer)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#12</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Focus Killer</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This is the one thing killing your focus.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa é a coisa que está matando seu foco.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Phone buzzing next to laptop, hand flipping it face-down.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-20.webp" alt="Hook 20 — The word “Someday” in red, crossed out. (texto na tela: No Someday)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#20</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">No Someday</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people fail because of this one word.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria falha por causa de uma palavra.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> The word “Someday” in red, crossed out.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-33.webp" alt="Hook 33 — Calendar overlay morphing into actual activity footage. (texto na tela: Schedule Lie)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#33</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Schedule Lie</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your schedule is lying to you.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Sua agenda está mentindo pra você.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Calendar overlay morphing into actual activity footage.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-3" data-inema-topic="modulo-2-4#topico-3" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔄 Contrarian & quebra de crença</h2>
+      </div>
+      <p data-inema-block="m2-4-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">O "Contrarian Snapback": começa concordando com o senso comum e vira a mesa ("…não é"). A tensão entre o que a pessoa acredita e o que você afirma prende até a resposta aparecer. <span class="text-blue-400 font-semibold">17 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-01.webp" alt="Hook 1 — To-do list half-complete with sticky note saying “Why?”. (texto na tela: Not Motivation)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#01</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Not Motivation</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You don't have a motivation problem — you have this problem.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Você não tem problema de motivação — tem este problema.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> To-do list half-complete with sticky note saying “Why?”.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-02.webp" alt="Hook 2 — Alarm clock smashed, replaced by calendar blocking focus time. (texto na tela: Skip 5AM)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#02</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Skip 5AM</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Waking up early is overrated — here's what works instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Acordar cedo é superestimado — veja o que funciona.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Alarm clock smashed, replaced by calendar blocking focus time.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-04.webp" alt="Hook 4 — Heavy bag dropped off a hiker's back. (texto na tela: Remove This)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#04</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Remove This</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people work harder — the top 1% remove this instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria trabalha mais — o topo 1% remove isto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Heavy bag dropped off a hiker's back.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-06.webp" alt="Hook 6 — Chain breaking around a clock. (texto na tela: Not Discipline)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#06</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Not Discipline</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You think you need discipline — but you actually need this.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Você acha que precisa de disciplina — mas precisa disto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Chain breaking around a clock.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-07.webp" alt="Hook 7 — Computer desktop being cleared of apps. (texto na tela: Delete This)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#07</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Delete This</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Productivity isn't about doing more… it's about deleting this first.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Produtividade não é fazer mais… é deletar isto primeiro.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Computer desktop being cleared of apps.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-08.webp" alt="Hook 8 — Workday shrinking from 10 to 6 hours, output rising. (texto na tela: Less Time)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#08</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Less Time</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I got more done by working fewer hours.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Produzi mais trabalhando menos horas.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Workday shrinking from 10 to 6 hours, output rising.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-09.webp" alt="Hook 9 — Giant checklist replaced with one small task. (texto na tela: Smaller Goals)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#09</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Smaller Goals</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your goals are too big — that's the problem.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Suas metas são grandes demais — esse é o problema.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Giant checklist replaced with one small task.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-11.webp" alt="Hook 11 — Dominoes falling in slow motion. (texto na tela: Momentum)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#11</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Momentum</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Stop chasing motivation — build momentum instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Pare de buscar motivação — construa momentum.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Dominoes falling in slow motion.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-13.webp" alt="Hook 13 — Messy app screen replaced with clean notebook. (texto na tela: System)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#13</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">System</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You don't need more apps — you need this system.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Você não precisa de mais apps — precisa deste sistema.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Messy app screen replaced with clean notebook.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-15.webp" alt="Hook 15 — Morning checklist cut down to three key actions. (texto na tela: Quick Start)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#15</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Quick Start</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your morning routine is too long — here's the fix.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Sua rotina matinal é longa demais — veja a correção.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Morning checklist cut down to three key actions.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-17.webp" alt="Hook 17 — Messy calendar replaced by simple weekly planner. (texto na tela: Plan Smarter)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#17</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Plan Smarter</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You're planning wrong — do this instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Você planeja errado — faça assim.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Messy calendar replaced by simple weekly planner.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-18.webp" alt="Hook 18 — Deadline crossed out, replaced with a daily progress bar. (texto na tela: Progress)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#18</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Progress</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Stop setting deadlines — set this instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Pare de marcar prazos — marque isto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Deadline crossed out, replaced with a daily progress bar.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-21.webp" alt="Hook 21 — Progress bar stopping at 80%, green check mark. (texto na tela: Stop Early)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#21</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Stop Early</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I get more done by stopping at 80%.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Rendo mais parando em 80%.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Progress bar stopping at 80%, green check mark.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-25.webp" alt="Hook 25 — Bored person at desk suddenly lighting up with new project. (texto na tela: Challenge Up)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#25</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Challenge Up</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You're not burned out — you're under-challenged.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Você não está esgotado — está pouco desafiado.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Bored person at desk suddenly lighting up with new project.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-26.webp" alt="Hook 26 — Long list replaced by top 3 tasks highlighted. (texto na tela: List Right)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#26</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">List Right</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people write to-do lists wrong — here's the right way.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria escreve a lista de tarefas errado — veja o certo.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Long list replaced by top 3 tasks highlighted.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-27.webp" alt="Hook 27 — Perfect project replaced with “Done” stamp. (texto na tela: Aim Done)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#27</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Aim Done</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Stop aiming for perfect — aim for this.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Pare de buscar o perfeito — busque isto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Perfect project replaced with “Done” stamp.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-31.webp" alt="Hook 31 — Coffee cup replaced by a clear plan. (texto na tela: Plan &gt; Energy)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#31</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Plan &gt; Energy</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Most people think they need more energy — they need this instead.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> A maioria acha que precisa de mais energia — precisa disto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Coffee cup replaced by a clear plan.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-4" data-inema-topic="modulo-2-4#topico-4" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔢 Número & especificidade</h2>
+      </div>
+      <p data-inema-block="m2-4-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">Cifras, prazos e quantidades exatas ($10.000, 4 segundos, 30 dias). O específico soa verdadeiro e mensurável — o cérebro confia mais em número do que em adjetivo. <span class="text-blue-400 font-semibold">5 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-03.webp" alt="Hook 3 — Person meditating at desk, timer counting down from 10 minutes. (texto na tela: Focus Boost)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#03</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Focus Boost</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“You can double your focus in 10 minutes… no coffee required.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Dobre seu foco em 10 minutos… sem café.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person meditating at desk, timer counting down from 10 minutes.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-10.webp" alt="Hook 10 — Stopwatch, quick setup routine montage. (texto na tela: 2-Minute Rule)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#10</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">2-Minute Rule</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This 2-minute trick makes me unstoppable.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse truque de 2 minutos me deixa imparável.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Stopwatch, quick setup routine montage.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-16.webp" alt="Hook 16 — Clock hands spinning backwards. (texto na tela: +3 Hours)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#16</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">+3 Hours</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I got 3 hours back every day by doing this.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Recuperei 3 horas por dia fazendo isto.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Clock hands spinning backwards.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-23.webp" alt="Hook 23 — Person writing tomorrow's to-do list before leaving desk. (texto na tela: End-Day Reset)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#23</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">End-Day Reset</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This 5-minute end-of-day habit will change your mornings.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse hábito de 5 minutos no fim do dia muda suas manhãs.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person writing tomorrow's to-do list before leaving desk.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-30.webp" alt="Hook 30 — Calendar flipping from January to December with learning icons. (texto na tela: 1 Month)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#30</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">1 Month</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I learned more in 1 month than most do in a year — here's how.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Aprendi mais em 1 mês do que a maioria em um ano — veja como.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Calendar flipping from January to December with learning icons.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-5" data-inema-topic="modulo-2-4#topico-5" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🏆 Prova pessoal & resultado</h2>
+      </div>
+      <p data-inema-block="m2-4-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">Primeira pessoa, resultado concreto ("Eu fiz / perdi / dobrei"). História real ativa identificação e curiosidade: "como ELE conseguiu?". <span class="text-blue-400 font-semibold">6 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-05.webp" alt="Hook 5 — Calendar flipping from chaos to organized blocks. (texto na tela: One Habit)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#05</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">One Habit</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This habit changed my entire year.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esse hábito mudou meu ano inteiro.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Calendar flipping from chaos to organized blocks.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-14.webp" alt="Hook 14 — Multiple browser tabs closing, single document maximized. (texto na tela: No Multitask)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#14</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">No Multitask</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I stopped multitasking — and got more done.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Parei de fazer várias coisas ao mesmo tempo — e rendi mais.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Multiple browser tabs closing, single document maximized.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-19.webp" alt="Hook 19 — Social media icon fading away. (texto na tela: Quit This)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#19</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Quit This</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I quit this habit and doubled my free time.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Larguei esse hábito e dobrei meu tempo livre.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Social media icon fading away.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-24.webp" alt="Hook 24 — Timer set to 5 minutes, person starting task immediately. (texto na tela: Beat Delay)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#24</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Beat Delay</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I finally beat procrastination with this simple trick.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Venci a procrastinação com este truque simples.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Timer set to 5 minutes, person starting task immediately.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-28.webp" alt="Hook 28 — Person turning page from “Can't” to “Can”. (texto na tela: Mindset Shift)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#28</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Mindset Shift</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“This one mindset shift doubled my output.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Essa mudança de mentalidade dobrou minha produção.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person turning page from “Can't” to “Can”.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-32.webp" alt="Hook 32 — Friday crossed out on calendar, revenue chart rising. (texto na tela: No Friday)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#32</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">No Friday</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“I stopped working Fridays — and my business grew.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Parei de trabalhar às sextas — e meu negócio cresceu.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Friday crossed out on calendar, revenue chart rising.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-6" data-inema-topic="modulo-2-4#topico-6" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧲 Curiosidade & loop aberto</h2>
+      </div>
+      <p data-inema-block="m2-4-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Abre uma lacuna de informação e segura a resposta ("isto", "aqui está o que…"). O loop aberto cria coceira mental: o espectador fica pra fechar o ciclo. <span class="text-blue-400 font-semibold">2 hooks deste nicho usam esse padrão.</span></p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-22.webp" alt="Hook 22 — Multiple tabs and apps closing instantly. (texto na tela: Input Detox)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#22</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Input Detox</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your brain can't handle this much input — here's the fix.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Seu cérebro não aguenta tanto input — veja a correção.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Multiple tabs and apps closing instantly.</p>
+            </div>
+          </div>
+          <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+            <img src="img/self-improvement/hook-29.webp" alt="Hook 29 — Messy desk transforming into minimal workspace. (texto na tela: Fix Space)" loading="lazy" class="hook-img" width="1024" height="576">
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-blue-400 font-bold text-sm">#29</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto na tela (overlay)">Fix Space</span>
+              </div>
+              <p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your environment is working against you — fix it.”</p>
+              <p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Seu ambiente trabalha contra você — corrija.</p>
+              <p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Messy desk transforming into minimal workspace.</p>
+            </div>
+          </div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do módulo</h2>
+        <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">33 hooks prontos</strong><span class="text-neutral-400"> de Autodesenvolvimento & Produtividade, cada um com frase falada, visual e texto na tela.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">5 padrões virais</strong><span class="text-neutral-400"> mapeados: medo, contrarian, número, prova pessoal e curiosidade.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">A fórmula aplicada</strong><span class="text-neutral-400"> — Context Lean → Scroll Stop → Contrarian Snapback — vista em exemplos reais.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Próximo passo</strong><span class="text-neutral-400"> — leve um desses hooks pra Trilha 3 e gere variações com IA.</span></div></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a trilha</a>
+        <a href="modulo-2-5.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo nicho →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>33 Viral Hooks - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+</body>
+</html>

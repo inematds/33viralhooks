@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="viralhooks">
+  <title>Prompts para gerar hooks | 33 Viral Hooks</title>
+
+  <!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+
+  <!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+  <script type="application/json" data-inema-manifest>
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento purple */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🪝</span>
+            <span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" aria-label="Alternar tema claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
+      <span class="text-purple-400">Módulo 3.1</span>
+    </div>
+  </nav>
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⌨️ Prompts para gerar hooks</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">4 prompts copy-run prontos: gerar hooks, completar as 3 camadas, criar o prompt de imagem e filtrar com rubrica.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">~30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Avançado</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="3-1" data-inema-track="3">
+    <section id="topico-1" data-inema-topic="modulo-3-1#topico-1" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">Por que gerar hooks com IA (e a regra de ouro)</h2>
+      </div>
+      <p data-inema-block="m3-1-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Você já tem 165 hooks e a fórmula. A IA entra pra <strong class="text-purple-400">multiplicar</strong>: gerar dezenas de variações no seu nicho, em segundos. Mas há uma regra de ouro — a IA rascunha, <strong>você edita e escolhe</strong>.</p>
+      <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+        <svg viewBox="0 0 800 180" class="w-full h-auto" role="img" aria-label="Fluxo de geração de hooks com IA: ideia, prompt, lote de variações, filtro humano e hook final">
+          <defs>
+            <filter id="t3m1-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="t3m1-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#c084fc" opacity="0.10"/></pattern>
+            <marker id="t3m1-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"/></marker>
+          </defs>
+          <rect x="0" y="0" width="800" height="180" fill="url(#t3m1-grid)"/>
+          <rect x="20" y="70" width="150" height="70" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="95" y="100" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="12">Ideia/nicho</text><text x="95" y="119" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="10">o assunto</text><path class="wf-a" d="M170,105 L172.5,105" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#t3m1-ah)"/>
+          <rect x="172.5" y="70" width="150" height="70" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="247.5" y="100" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="12">Prompt</text><text x="247.5" y="119" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="10">o pedido à IA</text><path class="wf-a" d="M322.5,105 L325,105" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#t3m1-ah)"/>
+          <rect x="325" y="70" width="150" height="70" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="400" y="100" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="12">Lote</text><text x="400" y="119" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="10">20-30 variações</text><path class="wf-a" d="M475,105 L477.5,105" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#t3m1-ah)"/>
+          <rect x="477.5" y="70" width="150" height="70" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="552.5" y="100" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="12">Filtro</text><text x="552.5" y="119" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="10">você escolhe</text><path class="wf-a" d="M627.5,105 L630,105" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#t3m1-ah)"/>
+          <rect x="630" y="70" width="150" height="70" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="1.8"/><text x="705" y="100" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="12">Hook final</text><text x="705" y="119" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="10">3 camadas</text>
+        </svg>
+      </div>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? O que é um "prompt"</h3><p class="text-neutral-300 text-sm">Prompt é a instrução que você dá pra IA (ChatGPT, Claude, etc.). Um bom prompt de hook tem: papel ("você é roteirista viral"), contexto (nicho, fórmula), tarefa (quantos hooks, formato) e restrições (curto, específico, sem clichê).</p></div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> A IA erra pra mais</h3><p class="text-neutral-300 text-sm">Modelos de IA tendem a soar genéricos ("dicas incríveis"). Por isso o prompt PROÍBE clichê e exige a fórmula + específico. E mesmo assim: você filtra. 30 gerados, 3 prestáveis é um ótimo resultado.</p></div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-2" data-inema-topic="modulo-3-1#topico-2" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">Prompt 1 — o Gerador de Hooks</h2>
+      </div>
+      <p data-inema-block="m3-1-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Cole este prompt no ChatGPT/Claude. Ele gera 20 hooks no seu nicho seguindo a fórmula, em formato de tabela com as 3 camadas. Troque o que está em <code class="text-purple-400">&lt;colchetes&gt;</code>.</p>
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Gerar 20 hooks virais prontos no seu nicho, com as 3 camadas.</span></div>
+        <pre class="p-5 overflow-x-auto text-sm font-mono text-neutral-200 leading-relaxed whitespace-pre-wrap">Você é um roteirista de vídeo curto especialista em hooks virais (TikTok, Reels, Shorts).
+
+NICHO: &lt;seu nicho — ex.: finanças pessoais para iniciantes&gt;
+IDIOMA: &lt;português do Brasil&gt;
+
+Gere 20 hooks seguindo a fórmula "Context Lean → Scroll Stop → Contrarian Snapback":
+- Context Lean: comece no pico, zero "oi pessoal", zero contexto inútil.
+- Scroll Stop: a cena/afirmação que trava o dedo nos 3 primeiros segundos.
+- Contrarian Snapback: contrarie uma crença comum do nicho ("...não é", "pare de...", "você acha X, mas...").
+
+Use estes 5 padrões, ~4 hooks de cada: medo/alta aposta, contrarian, número/especificidade, prova pessoal, curiosidade/loop aberto.
+
+REGRAS:
+- Cada hook em 3 camadas: (1) Frase falada — máx 12 palavras; (2) Visual Hook — a cena na tela; (3) Text Hook — 2 a 3 palavras de overlay.
+- Específico vence genérico: use números, valores, prazos.
+- PROIBIDO: clichê ("dicas incríveis"), abertura genérica, promessa vaga.
+
+Responda em TABELA com colunas: # | Frase falada | Visual Hook | Text Hook | Padrão.</pre>
+        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">A IA deve devolver uma tabela de 20 linhas. Cheque: cada frase falada tem uma lacuna (curiosidade) e algo específico? O Text Hook tem no máx 3 palavras? Se vier genérico, responda "refaça mais contrarian e específico".</span></div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Modelo recomendado</h3><p class="text-neutral-300 text-sm">Use o modelo mais capaz disponível (ex.: Claude Opus ou GPT mais recente). Hooks dependem de nuance — modelos pequenos entregam mais clichê.</p></div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-3" data-inema-topic="modulo-3-1#topico-3" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">Prompt 2 — Gerador das 3 camadas a partir de uma frase</h2>
+      </div>
+      <p data-inema-block="m3-1-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">Já tem uma frase boa mas faltam o visual e o texto na tela? Este prompt completa as 3 camadas de qualquer linha que você jogar.</p>
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Transformar uma frase falada solta nas 3 camadas completas (com 3 opções de visual).</span></div>
+        <pre class="p-5 overflow-x-auto text-sm font-mono text-neutral-200 leading-relaxed whitespace-pre-wrap">Tenho esta frase falada de hook: "&lt;cole sua frase aqui&gt;".
+
+Complete as 3 camadas:
+1) Refine a frase falada (máx 12 palavras, mantendo a ideia, mais punchy).
+2) Proponha 3 opções de Visual Hook — cenas concretas e legíveis em tela de celular, com tensão ou contraste. Descreva cada cena em 1 linha.
+3) Proponha 3 opções de Text Hook (2 a 3 palavras cada).
+
+Para cada Visual Hook, diga em 1 frase POR QUE ele para o dedo.
+Formato: listas curtas, sem enrolação.</pre>
+        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Você deve receber 1 frase refinada + 3 visuais + 3 textos. Escolha 1 de cada. Teste mental: o visual escolhido funciona no mudo? O texto cabe num olhar?</span></div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-4" data-inema-topic="modulo-3-1#topico-4" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">Prompt 3 — gerar o prompt de IMAGEM do Visual Hook</h2>
+      </div>
+      <p data-inema-block="m3-1-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">O Visual Hook vira imagem. Este prompt produz um prompt de imagem pronto pra colar num gerador (flux2-klein, Midjourney, etc.) — exatamente como as 165 imagens deste curso foram feitas.</p>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Por que um prompt gera outro prompt</h3><p class="text-neutral-300 text-sm">Geradores de imagem têm uma "língua" própria (estilo, luz, lente, negativos). Pedir pra IA traduzir seu Visual Hook nessa língua poupa tentativa-e-erro e mantém o padrão visual consistente.</p></div>
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Converter um Visual Hook em um prompt de imagem cinematográfico pronto pra colar.</span></div>
+        <pre class="p-5 overflow-x-auto text-sm font-mono text-neutral-200 leading-relaxed whitespace-pre-wrap">Converta este Visual Hook num prompt de imagem para um gerador (flux/Midjourney):
+VISUAL HOOK: "&lt;ex.: cadeira de escritório vazia, tela com aviso 'Posição Encerrada'&gt;"
+
+Saída: um único parágrafo em inglês, estilo:
+"cinematic dark premium thumbnail, &lt;cena&gt;, dramatic moody lighting, deep navy-black background, high contrast, shallow depth of field, photographic realism, volumetric glow, 8k, no text, no watermark"
+
+Mantenha "no text, no watermark" no fim. Não invente texto na imagem (geradores erram letras).</pre>
+        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">O retorno é 1 parágrafo em inglês terminando em "no text, no watermark". Cole no gerador. Se aparecer texto torto na imagem, regenere com outra seed — o "no text" reduz, mas não zera.</span></div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Servidor local do INEMA</h3><p class="text-neutral-300 text-sm">Neste curso as imagens saíram do inemaimg (flux2-klein local). O mesmo prompt funciona em qualquer gerador — a estrutura é portátil.</p></div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-5" data-inema-topic="modulo-3-1#topico-5" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">Prompt 4 — lote: 33 hooks de um nicho de uma vez</h2>
+      </div>
+      <p data-inema-block="m3-1-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">Pra reproduzir o material original (33 hooks por nicho) num assunto novo, peça o lote completo já agrupado por padrão.</p>
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Gerar um pacote de 33 hooks de um nicho, agrupados pelos 5 padrões, em CSV.</span></div>
+        <pre class="p-5 overflow-x-auto text-sm font-mono text-neutral-200 leading-relaxed whitespace-pre-wrap">Gere 33 hooks virais para o nicho "&lt;seu nicho&gt;", idioma &lt;pt-BR&gt;, seguindo a fórmula Context Lean → Scroll Stop → Contrarian Snapback.
+
+Distribua entre os 5 padrões (medo, contrarian, número, prova pessoal, curiosidade).
+Cada hook: frase falada (máx 12 palavras), Visual Hook, Text Hook (2-3 palavras), padrão.
+
+Saída em CSV com cabeçalho:
+n,frase_falada,visual_hook,text_hook,padrao
+
+Sem texto fora do CSV. Aspas duplas em campos com vírgula.</pre>
+        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Salve a saída como .csv e abra numa planilha: deve ter 33 linhas + cabeçalho, 5 padrões representados. Filtre as linhas fracas; sobraram 20+ boas? Ótimo lote.</span></div>
+      </div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section id="topico-6" data-inema-topic="modulo-3-1#topico-6" class="mb-16 scroll-mt-20">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">Filtrar e iterar: a rubrica de 5 pontos</h2>
+      </div>
+      <p data-inema-block="m3-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Gerar é fácil; <strong>escolher</strong> é o trabalho. Use esta rubrica pra dar nota e ficar só com os hooks que merecem virar vídeo.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Rubrica — dê 0 ou 1 em cada (corte abaixo de 4/5)</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Específico?</strong> tem número/valor/prazo concreto.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Lacuna?</strong> deixa uma pergunta no ar.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Contrarian?</strong> contraria uma crença do nicho.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Visual?</strong> dá pra ver a cena em 1 segundo, no mudo.</span></li><li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Curto?</strong> frase em ~2s, texto em 2-3 palavras.</span></li></ul></div>
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-purple-900/20 border-b border-purple-500/30"><span class="text-purple-400 font-semibold text-sm">🎯 Objetivo:</span> <span class="text-neutral-300 text-sm">Fazer a IA pontuar e reescrever os hooks fracos automaticamente.</span></div>
+        <pre class="p-5 overflow-x-auto text-sm font-mono text-neutral-200 leading-relaxed whitespace-pre-wrap">Avalie cada hook da lista abaixo com a rubrica (0 ou 1 cada): específico, lacuna, contrarian, visual, curto. Some (0 a 5).
+
+Para hooks com nota &lt; 4, reescreva uma versão melhor mantendo o tema.
+Devolva: tabela com hook | nota | versão melhorada (quando aplicável).
+
+LISTA:
+&lt;cole aqui os hooks gerados&gt;</pre>
+        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600"><span class="text-emerald-400 font-semibold text-sm">✅ Como verificar:</span> <span class="text-neutral-400 text-sm">Você recebe notas + versões melhoradas. Leve pro próximo módulo (3.2) só os de nota 4-5 — eles viram o seu banco de hooks.</span></div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Próximo passo</h3><p class="text-neutral-300 text-sm">No Módulo 3.2 você transforma esses prompts num SISTEMA reutilizável — uma skill que faz tudo isso com um comando.</p></div>
+      <div class="flex justify-start mt-6">
+        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+          <span class="inema-read-icon" aria-hidden="true">○</span>
+          <span class="inema-read-label">Marcar como lido</span>
+        </button>
+      </div>
+    </section>
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do módulo</h2>
+        <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">A IA multiplica</strong><span class="text-neutral-400"> — você gera dezenas de variações; você edita e escolhe.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">4 prompts copy-run</strong><span class="text-neutral-400"> — gerar, completar camadas, prompt de imagem, lote em CSV.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Rubrica de 5 pontos</strong><span class="text-neutral-400"> — específico, lacuna, contrarian, visual, curto.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Próximo</strong><span class="text-neutral-400"> — virar tudo isso numa skill com um comando só.</span></div></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a trilha</a>
+        <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Módulo 3.2 →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>33 Viral Hooks - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+</body>
+</html>

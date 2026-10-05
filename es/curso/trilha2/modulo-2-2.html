@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="viralhooks" name="inema-course"/>
+<title>Finanzas y Negocios — 33 Hooks | 33 Viral Hooks</title>
+<!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+<script data-inema-manifest="" type="application/json">
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento blue */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+<link href="https://inematds.github.io/33viralhooks/curso/trilha2/modulo-2-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/en/curso/trilha2/modulo-2-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/es/curso/trilha2/modulo-2-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🪝</span>
+<span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html">
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Avanzado</span>
+</a>
+<button aria-label="Alternar tema claro/oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">💰 Finanzas y negocios</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Los 33 hooks virales de Finanzas y negocios, con frase hablada, visual y texto en pantalla — agrupados según los 5 patrones que detienen el scroll.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">33</div>
+<div class="text-xs text-neutral-400">Hooks</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">6</div>
+<div class="text-xs text-neutral-400">Secciones</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">~25</div>
+<div class="text-xs text-neutral-400">Minutos</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">Práctico</div>
+<div class="text-xs text-neutral-400">Tipo</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="2-2" data-inema-track="2" id="conteudo">
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">Cómo Finanças &amp; Negócios capta la atención</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t1-p1">Vender atajos y estatus. El público quiere más dinero con menos esfuerzo: el hook ofrece una cifra específica ($10 mil, 5 minutos), una confesión ("perdí US$50 mil") o una regla contraintuitiva ("deja de ahorrar").</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Fórmula del hook en 3 pasos: Context Lean (contexto mínimo), Scroll Stop (la escena que detiene el dedo) y Contrarian Snapback (el giro que te mantiene hasta el final)" class="w-full h-auto" role="img" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="f2-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="f2-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="f2-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="f2-ah" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#f2-grid)" height="200" width="800" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2">
+<path class="wf-a" d="M250,100 L290,100" marker-end="url(#f2-ah)"></path>
+<path class="wf-a" d="M510,100 L550,100" marker-end="url(#f2-ah)"></path>
+</g>
+<rect fill="#0e1622" height="80" rx="14" stroke="url(#f2-grad)" stroke-width="2" width="210" x="40" y="60"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="145" y="92">1 · Context Lean</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="145" y="112">contexto mínimo, sin rodeos</text>
+<g filter="url(#f2-glow)"><rect fill="#0e1622" height="80" rx="14" stroke="url(#f2-grad)" stroke-width="2.4" width="210" x="295" y="60"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="400" y="92">2 · Scroll Stop</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="112">la escena que hace que el dedo se detenga</text>
+<rect fill="#0e1622" height="80" rx="14" stroke="url(#f2-grad)" stroke-width="2" width="210" x="550" y="60"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="655" y="92">3 · Contrarian Snapback</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="655" y="112">el giro que te mantiene hasta el final</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="145" y="40">qué decir</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="40">qué mostrar</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="655" y="40">qué prometer</text>
+</svg>
+</div>
+<p class="text-neutral-400 text-sm mb-2 text-center">La fórmula del PDF — <strong class="text-blue-400">Context Lean → Scroll Stop → Contrarian Snapback</strong> — aplicada a los 33 hooks de este nicho.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mt-6">
+<h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Cómo leer cada tarjeta</h3>
+<p class="text-neutral-300 text-sm" data-inema-block="m2-2-t1-p2">Cada hook de abajo incluye las <strong>3 capas</strong> apiladas: la <strong>frase hablada</strong> (en inglés, lista para usar o adaptar), la traducción al PT-BR, el <strong>🎬 Visual</strong> (qué mostrar) y la insignia azul con el <strong>Text Hook</strong> (el texto breve en pantalla). La imagen es una referencia visual generada para cada ejemplo.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">💬</div><div class="text-sm font-semibold text-blue-400">Frase hablada</div><p class="text-xs text-neutral-400 mt-1">la línea que narras/escribes</p></div>
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎬</div><div class="text-sm font-semibold text-blue-400">Hook visual</div><p class="text-xs text-neutral-400 mt-1">la escena que aparece en pantalla</p></div>
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🔤</div><div class="text-sm font-semibold text-blue-400">Text Hook</div><p class="text-xs text-neutral-400 mt-1">el overlay corto de 2-3 palabras</p></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">⚠️ Miedo y apuesta alta</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t2-p1">Amenaza, pérdida o riesgo. El cerebro no puede ignorar lo que parece peligroso — es el «scroll stop» más primitivo. Funciona cuando hay algo que perder. <span class="text-blue-400 font-semibold">6 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 2 — Gráfico del mercado bursátil que se desploma en rojo. (texto en pantalla: Warning)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-02.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#02</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Warning</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Esto no es un consejo de inversión… es una advertencia.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esto no es un consejo de inversión… es una advertencia.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Gráfico del mercado bursátil desplomándose en rojo.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 3 — El saldo de una cuenta bancaria cae rápidamente. (texto en pantalla: Perdí 50K)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-03.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#03</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Perdió 50K</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Perdí $50,000 en una semana… y lo volvería a hacer.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Perdí US$50 mil en una semana… y lo volvería a hacer.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> El saldo de la cuenta bancaria baja rápidamente.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 4 — Trampa para ratones con billetes adentro. (texto en pantalla: La trampa de los ingresos pasivos)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-04.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#04</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Passive Income Trap</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Todos buscan ingresos pasivos… aquí te explico por qué son una trampa.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Todo el mundo busca ingresos pasivos… mira por qué es una trampa.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Trampa para ratones con billetes de dólar adentro.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 13 — Mano firmando una factura enorme. (texto en pantalla: Big Mistake)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-13.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#13</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Gran error</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este es el mayor error financiero que cometen los profesionales.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este es el mayor error financiero de los profesionales.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Hand signing a huge bill.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 20 — Reloj que se transforma en un cerebro. (texto en pantalla: One Skill)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-20.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#20</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Skill</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“No necesitas más tiempo: necesitas esta habilidad.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> No necesitas más tiempo: necesitas esta habilidad.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> El reloj se transforma en un cerebro.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 25 — Bóveda bancaria de la que se escapan billetes de dólar. (texto en pantalla: Perdiendo dinero)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-25.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#25</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Perder dinero</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Your savings account is costing you money.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Tu cuenta de ahorros te está haciendo perder dinero.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Una bóveda bancaria deja escapar billetes de dólar.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🔄 Contrarianismo y ruptura de creencias</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t3-p1">El "Contrarian Snapback": empieza coincidiendo con el sentido común y luego le da la vuelta ("…no es"). La tensión entre lo que la persona cree y lo que afirmas mantiene la atención hasta que aparece la respuesta. <span class="text-blue-400 font-semibold">13 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 1 — $10,000 en efectivo sobre una mesa; una mano lo aparta de un manotazo. (texto en pantalla: Not What You Think)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-01.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#01</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Not What You Think</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La forma más rápida de ganar $10,000 no es la que piensas.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La forma más rápida de ganar US$10 mil no es la que piensas.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> $10,000 in cash on a table, hand swiping it away.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 5 — Calendario vacío de clientes reemplazado por un solo trato de alto valor. (texto en pantalla: Menos tratos, más grandes)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-05.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#05</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Menos negocios, más grandes</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“No necesitas más clientes: necesitas esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> No necesitas más clientes: necesitas esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Calendario vacío de clientes reemplazado por un contrato de alto valor.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 6 — Persona que escribe frenéticamente, reemplazada por alguien que se relaja con una laptop. (texto en pantalla: No más duro)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-06.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#06</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Not Harder</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría cree que la riqueza se construye trabajando más duro. No es así.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría cree que la riqueza viene de trabajar más. No es así.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person typing frantically, replaced by someone relaxing with laptop.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 10 — Alcancía que se rompe y deja ver dinero en una caja fuerte. (texto en pantalla: Save Smart)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-10.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#10</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Ahorra con inteligencia</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría ahorra dinero de la manera equivocada; esta es la correcta.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría ahorra de la manera equivocada; mira cuál es la correcta.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Piggy bank breaking to reveal cash in a safe.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 12 — Calendario con una “X” roja sobre varias reuniones. (texto en pantalla: Stop This)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-12.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#12</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Deja de hacer esto</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Si quieres duplicar tus ingresos, deja de hacer esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> ¿Quieres duplicar tus ingresos? Deja de hacer esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Un calendario con una “X” roja sobre varias reuniones.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 14 — Barra de progreso que salta instantáneamente de 0% a 100%. (texto en pantalla: 3 Months)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-14.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#14</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">3 Months</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría espera años para conseguir esto… yo lo conseguí en 3 meses.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría espera años por esto… lo conseguí en 3 meses.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> La barra de progreso pasa del 0% al 100% al instante.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 16 — Alcancía para la jubilación reemplazada por un gráfico de crecimiento de una cartera de inversiones. (texto en pantalla: Do This Instead)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-16.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#16</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Haz esto en su lugar</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Deja de ahorrar para la jubilación: haz esto en su lugar.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Deja de ahorrar para la jubilación — haz esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Alcancía para la jubilación reemplazada por un gráfico de crecimiento de una cartera de inversiones.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 18 — Tarjeta de crédito que se transforma en un auto de lujo. (texto en pantalla: Good Debt)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-18.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#18</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Good Debt</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría cree que las deudas son malas; yo las uso para hacerme rico.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría cree que la deuda es mala; yo la uso para enriquecerme.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Credit card morphing into a luxury car.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 22 — Una pequeña semilla que crece hasta convertirse en un árbol enorme. (texto en pantalla: Piensa en pequeño)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-22.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#22</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Think Smaller</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La forma más rápida de hacerte rico es pensar en pequeño.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La forma más rápida de hacerte rico es pensar en pequeño.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Semilla pequeña que crece hasta convertirse en un árbol enorme.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 23 — La lista de contactos se reduce a la mitad y el gráfico de ingresos se dispara. (texto en pantalla: Menos clientes)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-23.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#23</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Menos clientes</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Despedí a la mitad de mis clientes y dupliqué mis ingresos.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Despedí a la mitad de mis clientes y dupliqué mis ingresos.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Contact list being cut in half, income chart spiking.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 28 — Certificados de acciones que se reemplazan por una lista de clientes. (texto en pantalla: Compra esto)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-28.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#28</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Compra esto</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Deja de comprar activos; compra esto en su lugar.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Deja de comprar activos — compra esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Certificados bursátiles reemplazados por una lista de clientes.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 30 — Gráfico de ganancias que se reemplaza por un gráfico de ingresos recurrentes. (texto en pantalla: Enfócate aquí)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-30.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#30</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Concéntrate aquí</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría se enfoca en las ganancias; yo me enfoco en esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría se enfoca en las ganancias; yo me enfoco en esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> El gráfico de ganancias se sustituyó por un gráfico de ingresos recurrentes.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 33 — Carretera abierta que se extiende hasta el horizonte. (texto en pantalla: Libertad)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-33.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#33</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Libertad</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Esto no se trata de dinero: se trata de libertad.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esto no se trata de dinero, sino de libertad.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Carretera abierta que se extiende hasta el horizonte.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🔢 Número y especificidad</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t4-p1">Cifras, plazos y cantidades exactas ($10.000, 4 segundos, 30 días). Lo específico suena verdadero y medible: el cerebro confía más en un número que en un adjetivo. <span class="text-blue-400 font-semibold">8 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 7 — Billete de $500 que se transforma en fajos de dinero. (texto en pantalla: Sin acciones)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-07.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#07</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">No Stocks</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Convertí $500 en $15,000… sin invertir en la bolsa.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Convertí US$500 en US$15 mil… sin tocar la bolsa.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> $500 bill morphing into stacks of cash.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 9 — Comparación entre un recibo de sueldo y una captura de pago de PayPal. (texto en pantalla: Éxito con un ingreso extra)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-09.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#09</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Éxito con un trabajo extra</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este trabajo extra me da más dinero que mi empleo de tiempo completo.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este trabajo extra me deja más que mi empleo fijo.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Paycheck vs PayPal payment screenshot comparison.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 11 — Laptop con un panel de ventas; falta la imagen del producto. (texto en pantalla: No Product)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-11.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#11</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">No Product</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Gané $2,000 en un día… sin tener un producto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Gané US$2 mil en un día… sin ningún producto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Laptop con el panel de ventas abierto, falta la imagen del producto.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 17 — Billete de $100 que se convierte en lingotes de oro. (texto en pantalla: 20X Return)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-17.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#17</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">20X Return</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Esta inversión de $100 me hizo ganar $20,000.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esta inversión de US$100 me hizo ganar US$20 mil.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> $100 bill turning into gold bars.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 21 — Libro de reglas que se rompe por la mitad. (texto en pantalla: Break the Rules)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-21.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#21</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Rompe las reglas</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Gané mis primeros $100K rompiendo esta regla.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Gané mis primeros US$100 mil rompiendo esta regla.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Un reglamento que se rompe por la mitad.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 24 — Contador de $1,000 que aumenta en segundos. (texto en pantalla: Primeros $1K)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-24.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#24</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Primeros $1K</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Los primeros $1,000 son los más difíciles: así puedes conseguirlos rápido.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Los primeros US$1.000 son los más difíciles — mira cómo acelerar.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> $1,000 counter ticking up in seconds.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 29 — Editar el asunto de un correo electrónico provoca un aumento en el gráfico de ventas. (texto en pantalla: Una frase)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-29.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#29</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Sentence</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Multipliqué mis ingresos por 5 al cambiar una sola frase.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Multipliqué mis ingresos por 5 al cambiar una frase.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Edición del asunto de un correo electrónico provoca un pico en el gráfico de ventas.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 31 — Cronómetro marcando 5:00 junto a un contrato firmado. (texto en pantalla: Trato en 5 minutos)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-31.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#31</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">5-Minute Deal</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“El mejor trato que hice en mi vida se cerró en 5 minutos.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> El mejor negocio que cerré tomó 5 minutos.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Cronómetro que marca 5:00 junto a un contrato firmado.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🏆 Prueba personal y resultado</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t5-p1">Primera persona, resultado concreto («Yo hice / perdí / dupliqué»). Una historia real genera identificación y curiosidad: «¿cómo lo logró ÉL?». <span class="text-blue-400 font-semibold">3 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 19 — Contrato que se firma en cámara lenta. (texto en pantalla: One Decision)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-19.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#19</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Decision</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Esta decisión salvó mi negocio.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esta única decisión salvó mi negocio.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Contract being signed in slow motion.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 27 — Escritorio que queda despejado. (texto en pantalla: Renuncia al trabajo)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-27.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#27</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Quit Job</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Renuncié a mi trabajo sin un plan B; esto fue lo que pasó.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Dejé mi trabajo sin un plan B: mira lo que pasó.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Escritorio despejado.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 32 — Botón “Rechazar” en el teléfono, gráfico que se dispara hacia arriba. (texto en pantalla: Di que no)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-32.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#32</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Di que no</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Dupliqué mi patrimonio neto al decir que no más seguido.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Dupliqué mi patrimonio diciendo "no" más seguido.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Botón “Rechazar” en el teléfono; el gráfico se dispara hacia arriba.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🧲 Curiosidad y ciclo abierto</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t6-p1">Abre una brecha de información y guarda la respuesta ("esto", "aquí está lo que…"). El loop abierto genera inquietud mental: el espectador se queda para cerrar el ciclo. <span class="text-blue-400 font-semibold">3 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 8 — Mano que aparta un contrato con una “X” roja. (texto en pantalla: Evita esto)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-08.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#08</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Evita esto</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Las personas más ricas que conozco evitan esto a toda costa.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Las personas más ricas que conozco evitan esto a toda costa.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Hand pushing away a contract with red “X”.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 15 — Una pieza de ajedrez derriba a todas las demás. (texto en pantalla: One Move)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-15.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#15</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Move</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“El dinero más fácil que gané en mi vida vino de este único movimiento.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> El dinero más fácil que gané vino de un solo movimiento.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Una pieza de ajedrez que derriba todas las demás.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 26 — Billetera vacía que se transforma en un gráfico rentable. (texto en pantalla: Inversión gratis)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/finance-business/hook-26.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#26</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Inversión gratis</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mejor inversión que hice este año no me costó nada.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mejor inversión del año no me costó nada.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Billetera vacía transformándose en un gráfico rentable.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">33 hooks listos</strong><span class="text-neutral-400"> de Finanzas &amp; Negocios, cada uno con una frase hablada, un visual y texto en pantalla.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">5 patrones virales</strong><span class="text-neutral-400"> mapeados: miedo, contrarian, número, prueba personal y curiosidad.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La fórmula aplicada</strong><span class="text-neutral-400"> — Context Lean → Scroll Stop → Contrarian Snapback — vistos en ejemplos reales.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Próximo paso</strong><span class="text-neutral-400"> — lleva uno de estos hooks a la Ruta 3 y genera variaciones con IA.</span></div></div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-3.html">Siguiente nicho →</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>33 Viral Hooks - 2026 | <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+</body>
+</html>

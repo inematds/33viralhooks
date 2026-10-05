@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="viralhooks">
-  <title>As 3 camadas do hook | 33 Viral Hooks</title>
 
-  <!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
-  <script>
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="viralhooks" name="inema-course"/>
+<title>As 3 camadas do hook | 33 Viral Hooks</title>
+<!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -52,21 +52,18 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
   })();
   </script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
     tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
       primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-
-  <!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
-  <script type="application/json" data-inema-manifest>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+<script data-inema-manifest="" type="application/json">
   {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
   </script>
-
-  <style>
+<style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
 
@@ -127,291 +124,286 @@
     /* Card de hook (trilha 2) */
     .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
   </style>
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
-        <div class="flex items-center space-x-4">
-          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-            <span class="text-2xl">🪝</span>
-            <span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
-          </a>
-          <span class="text-neutral-600">|</span>
-          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
-        </div>
-        <div class="flex items-center space-x-1 sm:space-x-2">
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
-            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
-          </a>
-          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
-            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
-          </a>
-          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
-            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
-          </a>
-          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" aria-label="Alternar tema claro/escuro">
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-            </svg>
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
-    <div class="flex items-center space-x-2 text-sm text-neutral-400">
-      <a href="../../index.html" class="hover:text-emerald-400">Início</a><span>/</span>
-      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a><span>/</span>
-      <span class="text-emerald-400">Módulo 1.2</span>
-    </div>
-  </nav>
-  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2</span>
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧱 As 3 camadas do hook</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">Frase falada, Visual Hook e Text Hook: o que cada camada faz, como se reforçam e como montar as suas.</p>
-      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">6</div>
-          <div class="text-xs text-neutral-400">Tópicos</div>
-        </div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">~30</div>
-          <div class="text-xs text-neutral-400">Minutos</div>
-        </div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">Base</div>
-          <div class="text-xs text-neutral-400">Nível</div>
-        </div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">Prático</div>
-          <div class="text-xs text-neutral-400">Tipo</div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="1-2" data-inema-track="1">
-    <section id="topico-1" data-inema-topic="modulo-1-2#topico-1" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
-        <h2 class="text-2xl font-bold">As 3 camadas de todo hook deste curso</h2>
-      </div>
-      <p data-inema-block="m1-2-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Cada um dos 165 hooks deste curso é montado em <strong>3 camadas</strong> que tocam ao mesmo tempo nos primeiros segundos. Entender as camadas é o que te deixa montar hooks novos do zero.</p>
-      <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
-        <svg viewBox="0 0 800 240" class="w-full h-auto" role="img" aria-label="As 3 camadas empilhadas de um hook: frase falada (o que se ouve), visual hook (o que se vê) e text hook (o texto curto na tela), atuando juntas nos primeiros segundos">
-          <defs>
-            <linearGradient id="t1m2-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-            <filter id="t1m2-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <pattern id="t1m2-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#34d399" opacity="0.10"/></pattern>
-          </defs>
-          <rect x="0" y="0" width="800" height="240" fill="url(#t1m2-grid)"/>
-          <g filter="url(#t1m2-glow)"><rect x="250" y="20" width="300" height="200" rx="18" fill="#0e2018" stroke="url(#t1m2-grad)" stroke-width="2.4"/></g>
-          <text x="400" y="46" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">o telefone do espectador</text>
-          <rect x="280" y="60" width="240" height="44" rx="10" fill="#13241c" stroke="#34d399" stroke-width="1.6"/>
-          <text x="400" y="80" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="13">💬 Frase falada</text>
-          <text x="400" y="97" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10">o que se OUVE</text>
-          <rect x="280" y="112" width="240" height="44" rx="10" fill="#13241c" stroke="#38bdf8" stroke-width="1.6"/>
-          <text x="400" y="132" text-anchor="middle" fill="#38bdf8" font-family="Inter,sans-serif" font-weight="600" font-size="13">🎬 Visual Hook</text>
-          <text x="400" y="149" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10">o que se VÊ</text>
-          <rect x="280" y="164" width="240" height="44" rx="10" fill="#13241c" stroke="#34d399" stroke-width="1.6"/>
-          <text x="400" y="184" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="13">🔤 Text Hook</text>
-          <text x="400" y="201" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10">o que se LÊ na tela</text>
-        </svg>
-      </div>
-      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> As 3 camadas</h3><p class="text-neutral-300 mb-3 text-sm">Elas atuam em canais sensoriais diferentes — ouvido, olho e leitura — e por isso se reforçam.</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Frase falada</strong> (spoken line): o que você narra ou diz no início. É a tensão verbal.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> a cena/imagem que aparece — o que trava o dedo antes do áudio.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> o texto curto (2-3 palavras) sobreposto na tela, pra quem assiste sem som.</span></li></ul></div>
-      <div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
-        <table class="w-full text-sm text-left">
-          <thead class="bg-dark-700/60 text-emerald-400"><tr><th class="px-4 py-3 font-semibold">Camada</th><th class="px-4 py-3 font-semibold">Canal</th><th class="px-4 py-3 font-semibold">Função</th><th class="px-4 py-3 font-semibold">Exemplo</th></tr></thead>
-          <tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Frase falada</td><td class="px-4 py-3 text-neutral-300">ouvido</td><td class="px-4 py-3 text-neutral-300">tensão verbal, lacuna</td><td class="px-4 py-3 text-neutral-300">"…mas não é isso que choca"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Visual Hook</td><td class="px-4 py-3 text-neutral-300">olho</td><td class="px-4 py-3 text-neutral-300">para o dedo no frame 0</td><td class="px-4 py-3 text-neutral-300">cadeira vazia + "Posição Encerrada"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Text Hook</td><td class="px-4 py-3 text-neutral-300">leitura</td><td class="px-4 py-3 text-neutral-300">hook no mudo</td><td class="px-4 py-3 text-neutral-300">AI Took the Job</td></tr></tbody>
-        </table>
-      </div>
-      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Por que 3 e não 1</h3><p class="text-neutral-300 text-sm">85% das pessoas começam vídeos no mudo. Sem Text Hook e Visual, elas nunca ouvem sua melhor frase. As 3 camadas garantem que o hook funcione com ou sem som.</p></div>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section id="topico-2" data-inema-topic="modulo-1-2#topico-2" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
-        <h2 class="text-2xl font-bold">Camada 1 — a frase falada (spoken line)</h2>
-      </div>
-      <p data-inema-block="m1-2-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">A <strong class="text-emerald-400">frase falada</strong> é a linha que você narra nos primeiros segundos. É onde mora a tensão verbal — a lacuna que exige resposta.</p>
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Spoken line ≠ legenda</h3><p class="text-neutral-300 text-sm">A frase falada é o roteiro do que você DIZ. A legenda automática transcreve isso, mas o Text Hook (camada 3) é diferente: é um resumo curtíssimo, escolhido a dedo, em destaque.</p></div>
-      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> O que faz uma boa frase falada</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Cabe em ~2 segundos de fala (curta).</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Abre uma lacuna ("…mas não é isso que choca").</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Usa específico (número, nome, valor) em vez de adjetivo vago.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Termina deixando a pergunta no ar, não a resposta.</span></li></ul></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Frase falada forte</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Pedi o impossível pra IA… ela fez em 4 segundos."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Perdi US$50 mil numa semana… e faria de novo."</span></li></ul></div>
-        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Frase falada fraca</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Hoje vou mostrar umas coisas legais de IA."</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Investir é importante, hoje vamos falar sobre dinheiro."</span></li></ul></div>
-      </div>
-      <details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
-        <summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: 4 aberturas que sempre abrem lacuna</summary>
-        <div class="mt-4 text-neutral-300 text-sm space-y-3"><ul class="space-y-2"><li>• <strong>"Most people think X…"</strong> → contraria uma crença.</li><li>• <strong>"I [resultado absurdo]…"</strong> → prova pessoal + curiosidade.</li><li>• <strong>"This [coisa] can [feito impossível]…"</strong> → demonstração.</li><li>• <strong>"The [superlativo] … não é onde se espera."</strong> → quebra de expectativa.</li></ul></div>
-      </details>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section id="topico-3" data-inema-topic="modulo-1-2#topico-3" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
-        <h2 class="text-2xl font-bold">Camada 2 — o Visual Hook</h2>
-      </div>
-      <p data-inema-block="m1-2-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">O <strong class="text-emerald-400">Visual Hook</strong> é a cena que aparece na tela no segundo zero. Muitas vezes é o que REALMENTE para o dedo — antes do cérebro processar qualquer palavra.</p>
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Visual Hook em uma frase</h3><p class="text-neutral-300 text-sm">É a imagem ou micro-cena que ilustra (ou contrasta com) a frase falada: uma cadeira de escritório vazia, um gráfico despencando em vermelho, um cofrinho quebrando. Concreto, com tensão, e legível em telinha de celular.</p></div>
-      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> 3 tipos de Visual Hook que funcionam</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Mostra a consequência:</strong> "Posição Encerrada" na tela, conta bancária despencando.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Cria contraste:</strong> ChatGPT × UI ultra-futurista lado a lado.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Transformação rápida:</strong> US$100 virando barras de ouro, halter virando frigideira.</span></li></ul></div>
-      <div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
-        <div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Visual carregando o hook sozinho</span></div>
-        <div class="p-5 space-y-2 font-mono text-sm">
-          <p class="text-neutral-200"><span class="text-emerald-400">💬 Falada:</span> "Esse truque clona sua voz em 3 segundos."</p>
-          <p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> onda de áudio transformando de uma voz em outra</p>
-          <p class="text-neutral-200"><span class="text-primary">🔤 Texto:</span> Voice Cloning</p>
-        </div>
-        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Mesmo sem som, a onda mudando "conta" a história — o visual já é o hook.</div></div>
-      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> No curso, cada hook tem uma imagem de referência</h3><p class="text-neutral-300 text-sm">Na Trilha 2, você vê uma imagem gerada por IA pra cada um dos 165 Visual Hooks — exatamente pra você visualizar a cena antes de gravar.</p></div>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section id="topico-4" data-inema-topic="modulo-1-2#topico-4" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
-        <h2 class="text-2xl font-bold">Camada 3 — o Text Hook (overlay)</h2>
-      </div>
-      <p data-inema-block="m1-2-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">O <strong class="text-emerald-400">Text Hook</strong> é o texto curto que fica sobreposto na tela — geralmente 2 a 3 palavras grandes. É o hook pra quem assiste no mudo.</p>
-      <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
-        <svg viewBox="0 0 800 200" class="w-full h-auto" role="img" aria-label="Com o som desligado, a frase falada some, mas o Visual Hook e o Text Hook continuam funcionando — por isso o hook precisa das 3 camadas">
-          <defs>
-            <linearGradient id="t1snd-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-            <pattern id="t1snd-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#34d399" opacity="0.10"/></pattern>
-          </defs>
-          <rect x="0" y="0" width="800" height="200" fill="url(#t1snd-grid)"/>
-          <rect x="60" y="30" width="300" height="140" rx="14" fill="#1a1a2e" stroke="#4b5563" stroke-width="2"/>
-          <text x="210" y="24" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="11">85% assistem no MUDO 🔇</text>
-          <text x="210" y="72" text-anchor="middle" fill="#6b7280" font-family="Inter,sans-serif" font-size="12" text-decoration="line-through">💬 frase falada (não ouvem)</text>
-          <rect x="90" y="92" width="240" height="30" rx="8" fill="#0e1622" stroke="#38bdf8" stroke-width="1.5"/>
-          <text x="210" y="112" text-anchor="middle" fill="#38bdf8" font-family="Inter,sans-serif" font-size="12">🎬 Visual Hook (veem)</text>
-          <rect x="120" y="130" width="180" height="26" rx="8" fill="#13241c" stroke="#34d399" stroke-width="1.5"/>
-          <text x="210" y="148" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="12">🔤 AI Took the Job</text>
-          <g filter="url(#t1snd-grad)"></g>
-          <path d="M410,100 L470,100" stroke="#34d399" stroke-width="2.5" marker-end="url(#t1snd-ah)"/>
-          <defs><marker id="t1snd-ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#34d399"/></marker></defs>
-          <g><rect x="490" y="55" width="270" height="90" rx="14" fill="#0e2018" stroke="url(#t1snd-grad)" stroke-width="2.2"/></g>
-          <text x="625" y="92" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="14">o hook ainda funciona</text>
-          <text x="625" y="115" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11">visual + texto seguram sem som</text>
-        </svg>
-      </div>
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Text Hook em uma frase</h3><p class="text-neutral-300 text-sm">É o resumo brutalmente curto da promessa, em destaque visual: "AI Took the Job", "Lost 50K", "Passive Income Trap". Não é a legenda inteira — é a manchete.</p></div>
-      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Regras do Text Hook</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Curto: 2-3 palavras. Se não cabe num olhar, é longo demais.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Alto contraste, fonte grande, no terço superior ou central.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Reforça a tensão da frase falada, não repete ela inteira.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Aparece já no frame 0, junto com o visual.</span></li></ul></div>
-      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> English vs Português</h3><p class="text-neutral-300 text-sm">Os Text Hooks do material vêm em inglês (mercado global). Você pode usá-los assim ou adaptar: "Lost 50K" → "Perdi 50 mil". Na Trilha 2 cada card mostra o original + a versão PT-BR.</p></div>
-      <div data-inema-check="modulo-1-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-        <p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Checagem rápida <span class="text-xs text-neutral-500 font-normal">(opcional, não trava o avanço)</span></p>
-        <p class="text-neutral-300 text-sm mb-4">85% das pessoas começam vídeos no mudo. Qual camada NÃO chega nelas?</p>
-        <div class="inema-check-options space-y-2">
-          <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">A) O Visual Hook</button>
-          <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">B) A frase falada</button>
-          <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">C) O Text Hook</button>
-        </div>
-        <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-      </div>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section id="topico-5" data-inema-topic="modulo-1-2#topico-5" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
-        <h2 class="text-2xl font-bold">Como as 3 camadas se reforçam (e os erros comuns)</h2>
-      </div>
-      <p data-inema-block="m1-2-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">A mágica não está em cada camada isolada, e sim na <strong>sobreposição</strong>. Quando as três apontam pra mesma tensão, o hook fica difícil de ignorar.</p>
-      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Empilhamento certo — exemplo</h3><p class="text-neutral-300 mb-3 text-sm">Hook "AI Took the Job":</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>💬 Falada: "A IA substituiu um cargo de US$200 mil… mas o chocante não é isso."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🎬 Visual: cadeira de escritório vazia, tela com aviso "Posição Encerrada".</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🔤 Texto: AI Took the Job.</span></li></ul></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Camadas alinhadas</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>As 3 apontam pra mesma ideia (ameaça do emprego).</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Visual concreto que dá pra "ler" em 1 segundo.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Texto curto que reforça sem repetir a fala.</span></li></ul></div>
-        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Camadas brigando</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Fala fala de IA, visual mostra paisagem genérica.</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Texto longo demais (uma frase inteira na tela).</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Visual bonito mas sem tensão nenhuma.</span></li></ul></div>
-      </div>
-      <details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
-        <summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: o teste dos 3 cortes</summary>
-        <div class="mt-4 text-neutral-300 text-sm space-y-3"><p>Pegue seu hook pronto e faça 3 testes isolados: <strong>(1)</strong> leia só o Text Hook — desperta curiosidade sozinho? <strong>(2)</strong> veja só o Visual no mudo — dá pra entender a tensão? <strong>(3)</strong> ouça só a fala de olhos fechados — abre uma lacuna? Se passar nos três, suas camadas estão alinhadas e o hook funciona em qualquer condição de consumo.</p></div>
-      </details>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section id="topico-6" data-inema-topic="modulo-1-2#topico-6" class="mb-16 scroll-mt-20">
-      <div class="flex items-center space-x-4 mb-6">
-        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
-        <h2 class="text-2xl font-bold">Exercício: monte suas 3 camadas</h2>
-      </div>
-      <p data-inema-block="m1-2-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Hora de praticar. Pegue uma ideia sua e preencha as 3 camadas — esse é exatamente o formato que você vai reusar pro resto da vida.</p>
-      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Template das 3 camadas</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Frase falada:</strong> _________ (curta, com lacuna + específico)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> _________ (cena concreta com tensão)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> _________ (2-3 palavras)</span></li></ul></div>
-      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-        <h4 class="font-semibold text-white mb-3">Exemplo preenchido (nicho fitness)</h4>
-        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm space-y-1">
-          <p class="text-emerald-400">💬 "O melhor treino não é na academia… é na sua cozinha."</p>
-          <p class="text-sky-400">🎬 halter se transformando numa frigideira</p>
-          <p class="text-primary">🔤 Kitchen Gains</p>
-        </div>
-      </div>
-      <div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
-        <div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Mesmo exercício, nicho finanças</span></div>
-        <div class="p-5 space-y-2 font-mono text-sm">
-          <p class="text-neutral-200"><span class="text-emerald-400">💬 Falada:</span> "Sua conta poupança está te custando dinheiro."</p>
-          <p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> cofre de banco vazando notas pelo chão</p>
-          <p class="text-neutral-200"><span class="text-primary">🔤 Texto:</span> Losing Money</p>
-        </div>
-        <div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Falada com paradoxo (poupança que custa), visual de perda concreta, texto-manchete de 2 palavras.</div></div>
-      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Checagem rápida</h3><p class="text-neutral-300 text-sm">Leia só o Text Hook: ele sozinho desperta curiosidade? Olhe só o Visual: dá pra entender a tensão sem som? Se sim nos dois, suas camadas estão fortes.</p></div>
-      <div class="flex justify-start mt-6">
-        <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-          <span class="inema-read-icon" aria-hidden="true">○</span>
-          <span class="inema-read-label">Marcar como lido</span>
-        </button>
-      </div>
-    </section>
-    <section class="mb-12">
-      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
-        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do módulo</h2>
-        <div class="space-y-4 mb-8">
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">3 camadas</strong><span class="text-neutral-400"> — frase falada, Visual Hook e Text Hook, atuando juntas.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Som opcional</strong><span class="text-neutral-400"> — o hook precisa funcionar no mudo (visual + texto).</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Alinhamento</strong><span class="text-neutral-400"> — as 3 camadas apontam pra mesma tensão.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Template reutilizável</strong><span class="text-neutral-400"> — você já sabe montar suas próprias 3 camadas.</span></div></div>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a trilha</a>
-        <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Módulo 1.3 →</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="border-t border-dark-600 py-8 mt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>33 Viral Hooks - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
-    </div>
-  </footer>
-
-  <script>
+<link href="https://inematds.github.io/33viralhooks/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🪝</span>
+<span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html">
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+</a>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Trilha de navegação" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Início</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Trilha 1</a><span>/</span>
+<span class="text-emerald-400">Módulo 1.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧱 As 3 camadas do hook</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Frase falada, Visual Hook e Text Hook: o que cada camada faz, como se reforçam e como montar as suas.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">6</div>
+<div class="text-xs text-neutral-400">Tópicos</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">~30</div>
+<div class="text-xs text-neutral-400">Minutos</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">Base</div>
+<div class="text-xs text-neutral-400">Nível</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">Prático</div>
+<div class="text-xs text-neutral-400">Tipo</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="1-2" data-inema-track="1" id="conteudo">
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">As 3 camadas de todo hook deste curso</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p1">Cada um dos 165 hooks deste curso é montado em <strong>3 camadas</strong> que tocam ao mesmo tempo nos primeiros segundos. Entender as camadas é o que te deixa montar hooks novos do zero.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="As 3 camadas empilhadas de um hook: frase falada (o que se ouve), visual hook (o que se vê) e text hook (o texto curto na tela), atuando juntas nos primeiros segundos" class="w-full h-auto" role="img" viewbox="0 0 800 240">
+<defs>
+<lineargradient id="t1m2-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="t1m2-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t1m2-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t1m2-grid)" height="240" width="800" x="0" y="0"></rect>
+<g filter="url(#t1m2-glow)"><rect fill="#0e2018" height="200" rx="18" stroke="url(#t1m2-grad)" stroke-width="2.4" width="300" x="250" y="20"></rect></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="46">o telefone do espectador</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#34d399" stroke-width="1.6" width="240" x="280" y="60"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="80">💬 Frase falada</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="97">o que se OUVE</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#38bdf8" stroke-width="1.6" width="240" x="280" y="112"></rect>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="132">🎬 Visual Hook</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="149">o que se VÊ</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#34d399" stroke-width="1.6" width="240" x="280" y="164"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="184">🔤 Text Hook</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="201">o que se LÊ na tela</text>
+</svg>
+</div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> As 3 camadas</h3><p class="text-neutral-300 mb-3 text-sm">Elas atuam em canais sensoriais diferentes — ouvido, olho e leitura — e por isso se reforçam.</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Frase falada</strong> (spoken line): o que você narra ou diz no início. É a tensão verbal.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> a cena/imagem que aparece — o que trava o dedo antes do áudio.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> o texto curto (2-3 palavras) sobreposto na tela, pra quem assiste sem som.</span></li></ul></div>
+<div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+<table class="w-full text-sm text-left">
+<thead class="bg-dark-700/60 text-emerald-400"><tr><th class="px-4 py-3 font-semibold">Camada</th><th class="px-4 py-3 font-semibold">Canal</th><th class="px-4 py-3 font-semibold">Função</th><th class="px-4 py-3 font-semibold">Exemplo</th></tr></thead>
+<tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Frase falada</td><td class="px-4 py-3 text-neutral-300">ouvido</td><td class="px-4 py-3 text-neutral-300">tensão verbal, lacuna</td><td class="px-4 py-3 text-neutral-300">"…mas não é isso que choca"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Visual Hook</td><td class="px-4 py-3 text-neutral-300">olho</td><td class="px-4 py-3 text-neutral-300">para o dedo no frame 0</td><td class="px-4 py-3 text-neutral-300">cadeira vazia + "Posição Encerrada"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Text Hook</td><td class="px-4 py-3 text-neutral-300">leitura</td><td class="px-4 py-3 text-neutral-300">hook no mudo</td><td class="px-4 py-3 text-neutral-300">AI Took the Job</td></tr></tbody>
+</table>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Por que 3 e não 1</h3><p class="text-neutral-300 text-sm">85% das pessoas começam vídeos no mudo. Sem Text Hook e Visual, elas nunca ouvem sua melhor frase. As 3 camadas garantem que o hook funcione com ou sem som.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">Camada 1 — a frase falada (spoken line)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p1">A <strong class="text-emerald-400">frase falada</strong> é a linha que você narra nos primeiros segundos. É onde mora a tensão verbal — a lacuna que exige resposta.</p>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Spoken line ≠ legenda</h3><p class="text-neutral-300 text-sm">A frase falada é o roteiro do que você DIZ. A legenda automática transcreve isso, mas o Text Hook (camada 3) é diferente: é um resumo curtíssimo, escolhido a dedo, em destaque.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> O que faz uma boa frase falada</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Cabe em ~2 segundos de fala (curta).</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Abre uma lacuna ("…mas não é isso que choca").</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Usa específico (número, nome, valor) em vez de adjetivo vago.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Termina deixando a pergunta no ar, não a resposta.</span></li></ul></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Frase falada forte</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Pedi o impossível pra IA… ela fez em 4 segundos."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Perdi US$50 mil numa semana… e faria de novo."</span></li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Frase falada fraca</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Hoje vou mostrar umas coisas legais de IA."</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Investir é importante, hoje vamos falar sobre dinheiro."</span></li></ul></div>
+</div>
+<details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+<summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: 4 aberturas que sempre abrem lacuna</summary>
+<div class="mt-4 text-neutral-300 text-sm space-y-3"><ul class="space-y-2"><li>• <strong>"Most people think X…"</strong> → contraria uma crença.</li><li>• <strong>"I [resultado absurdo]…"</strong> → prova pessoal + curiosidade.</li><li>• <strong>"This [coisa] can [feito impossível]…"</strong> → demonstração.</li><li>• <strong>"The [superlativo] … não é onde se espera."</strong> → quebra de expectativa.</li></ul></div>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">Camada 2 — o Visual Hook</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p1">O <strong class="text-emerald-400">Visual Hook</strong> é a cena que aparece na tela no segundo zero. Muitas vezes é o que REALMENTE para o dedo — antes do cérebro processar qualquer palavra.</p>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Visual Hook em uma frase</h3><p class="text-neutral-300 text-sm">É a imagem ou micro-cena que ilustra (ou contrasta com) a frase falada: uma cadeira de escritório vazia, um gráfico despencando em vermelho, um cofrinho quebrando. Concreto, com tensão, e legível em telinha de celular.</p></div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> 3 tipos de Visual Hook que funcionam</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Mostra a consequência:</strong> "Posição Encerrada" na tela, conta bancária despencando.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Cria contraste:</strong> ChatGPT × UI ultra-futurista lado a lado.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Transformação rápida:</strong> US$100 virando barras de ouro, halter virando frigideira.</span></li></ul></div>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
+<div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Visual carregando o hook sozinho</span></div>
+<div class="p-5 space-y-2 font-mono text-sm">
+<p class="text-neutral-200"><span class="text-emerald-400">💬 Falada:</span> "Esse truque clona sua voz em 3 segundos."</p>
+<p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> onda de áudio transformando de uma voz em outra</p>
+<p class="text-neutral-200"><span class="text-primary">🔤 Texto:</span> Voice Cloning</p>
+</div>
+<div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Mesmo sem som, a onda mudando "conta" a história — o visual já é o hook.</div></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> No curso, cada hook tem uma imagem de referência</h3><p class="text-neutral-300 text-sm">Na Trilha 2, você vê uma imagem gerada por IA pra cada um dos 165 Visual Hooks — exatamente pra você visualizar a cena antes de gravar.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">Camada 3 — o Text Hook (overlay)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p1">O <strong class="text-emerald-400">Text Hook</strong> é o texto curto que fica sobreposto na tela — geralmente 2 a 3 palavras grandes. É o hook pra quem assiste no mudo.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Com o som desligado, a frase falada some, mas o Visual Hook e o Text Hook continuam funcionando — por isso o hook precisa das 3 camadas" class="w-full h-auto" role="img" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="t1snd-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<pattern height="32" id="t1snd-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t1snd-grid)" height="200" width="800" x="0" y="0"></rect>
+<rect fill="#1a1a2e" height="140" rx="14" stroke="#4b5563" stroke-width="2" width="300" x="60" y="30"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="210" y="24">85% assistem no MUDO 🔇</text>
+<text fill="#6b7280" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" text-decoration="line-through" x="210" y="72">💬 frase falada (não ouvem)</text>
+<rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="1.5" width="240" x="90" y="92"></rect>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="210" y="112">🎬 Visual Hook (veem)</text>
+<rect fill="#13241c" height="26" rx="8" stroke="#34d399" stroke-width="1.5" width="180" x="120" y="130"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="210" y="148">🔤 AI Took the Job</text>
+<g filter="url(#t1snd-grad)"></g>
+<path d="M410,100 L470,100" marker-end="url(#t1snd-ah)" stroke="#34d399" stroke-width="2.5"></path>
+<defs><marker id="t1snd-ah" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#34d399"></path></marker></defs>
+<g><rect fill="#0e2018" height="90" rx="14" stroke="url(#t1snd-grad)" stroke-width="2.2" width="270" x="490" y="55"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="625" y="92">o hook ainda funciona</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="625" y="115">visual + texto seguram sem som</text>
+</svg>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Text Hook em uma frase</h3><p class="text-neutral-300 text-sm">É o resumo brutalmente curto da promessa, em destaque visual: "AI Took the Job", "Lost 50K", "Passive Income Trap". Não é a legenda inteira — é a manchete.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Regras do Text Hook</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Curto: 2-3 palavras. Se não cabe num olhar, é longo demais.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Alto contraste, fonte grande, no terço superior ou central.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Reforça a tensão da frase falada, não repete ela inteira.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Aparece já no frame 0, junto com o visual.</span></li></ul></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> English vs Português</h3><p class="text-neutral-300 text-sm">Os Text Hooks do material vêm em inglês (mercado global). Você pode usá-los assim ou adaptar: "Lost 50K" → "Perdi 50 mil". Na Trilha 2 cada card mostra o original + a versão PT-BR.</p></div>
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-2#q1">
+<p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Checagem rápida <span class="text-xs text-neutral-500 font-normal">(opcional, não trava o avanço)</span></p>
+<p class="text-neutral-300 text-sm mb-4">85% das pessoas começam vídeos no mudo. Qual camada NÃO chega nelas?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">A) O Visual Hook</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">B) A frase falada</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">C) O Text Hook</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">Como as 3 camadas se reforçam (e os erros comuns)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p1">A mágica não está em cada camada isolada, e sim na <strong>sobreposição</strong>. Quando as três apontam pra mesma tensão, o hook fica difícil de ignorar.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Empilhamento certo — exemplo</h3><p class="text-neutral-300 mb-3 text-sm">Hook "AI Took the Job":</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>💬 Falada: "A IA substituiu um cargo de US$200 mil… mas o chocante não é isso."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🎬 Visual: cadeira de escritório vazia, tela com aviso "Posição Encerrada".</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🔤 Texto: AI Took the Job.</span></li></ul></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Camadas alinhadas</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>As 3 apontam pra mesma ideia (ameaça do emprego).</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Visual concreto que dá pra "ler" em 1 segundo.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Texto curto que reforça sem repetir a fala.</span></li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Camadas brigando</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Fala fala de IA, visual mostra paisagem genérica.</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Texto longo demais (uma frase inteira na tela).</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Visual bonito mas sem tensão nenhuma.</span></li></ul></div>
+</div>
+<details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+<summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Indo mais fundo: o teste dos 3 cortes</summary>
+<div class="mt-4 text-neutral-300 text-sm space-y-3"><p>Pegue seu hook pronto e faça 3 testes isolados: <strong>(1)</strong> leia só o Text Hook — desperta curiosidade sozinho? <strong>(2)</strong> veja só o Visual no mudo — dá pra entender a tensão? <strong>(3)</strong> ouça só a fala de olhos fechados — abre uma lacuna? Se passar nos três, suas camadas estão alinhadas e o hook funciona em qualquer condição de consumo.</p></div>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">Exercício: monte suas 3 camadas</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p1">Hora de praticar. Pegue uma ideia sua e preencha as 3 camadas — esse é exatamente o formato que você vai reusar pro resto da vida.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Template das 3 camadas</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Frase falada:</strong> _________ (curta, com lacuna + específico)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> _________ (cena concreta com tensão)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> _________ (2-3 palavras)</span></li></ul></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h4 class="font-semibold text-white mb-3">Exemplo preenchido (nicho fitness)</h4>
+<div class="bg-dark-700 rounded-lg p-4 font-mono text-sm space-y-1">
+<p class="text-emerald-400">💬 "O melhor treino não é na academia… é na sua cozinha."</p>
+<p class="text-sky-400">🎬 halter se transformando numa frigideira</p>
+<p class="text-primary">🔤 Kitchen Gains</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
+<div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Mesmo exercício, nicho finanças</span></div>
+<div class="p-5 space-y-2 font-mono text-sm">
+<p class="text-neutral-200"><span class="text-emerald-400">💬 Falada:</span> "Sua conta poupança está te custando dinheiro."</p>
+<p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> cofre de banco vazando notas pelo chão</p>
+<p class="text-neutral-200"><span class="text-primary">🔤 Texto:</span> Losing Money</p>
+</div>
+<div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Falada com paradoxo (poupança que custa), visual de perda concreta, texto-manchete de 2 palavras.</div></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Checagem rápida</h3><p class="text-neutral-300 text-sm">Leia só o Text Hook: ele sozinho desperta curiosidade? Olhe só o Visual: dá pra entender a tensão sem som? Se sim nos dois, suas camadas estão fortes.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">3 camadas</strong><span class="text-neutral-400"> — frase falada, Visual Hook e Text Hook, atuando juntas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Som opcional</strong><span class="text-neutral-400"> — o hook precisa funcionar no mudo (visual + texto).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Alinhamento</strong><span class="text-neutral-400"> — as 3 camadas apontam pra mesma tensão.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Template reutilizável</strong><span class="text-neutral-400"> — você já sabe montar suas próprias 3 camadas.</span></div></div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Voltar para a trilha</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-3.html">Módulo 1.3 →</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>33 Viral Hooks - 2026 | <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
@@ -438,11 +430,11 @@
     function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
-  <script src="../../assets/learn.js"></script>
-  <script>
+<script src="../../assets/learn.js"></script>
+<script>
     if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
   </script>
-  <script>
+<script>
     window.addEventListener('DOMContentLoaded', function () {
       if (window.INEMA && INEMA.registerCheck) {
       INEMA.registerCheck("modulo-1-2#q1", { answer: 1, explain: {"0":"O visual é exatamente o que funciona no mudo — chega sim.","1":"Isso. Sem som, a frase falada não é ouvida — por isso visual + texto são obrigatórios.","2":"O texto na tela é lido mesmo sem som — chega."} });

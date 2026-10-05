@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="viralhooks" name="inema-course"/>
+<title>Salud y fitness — 33 Hooks | 33 Hooks virales</title>
+<!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+<script data-inema-manifest="" type="application/json">
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento blue */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+<link href="https://inematds.github.io/33viralhooks/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🪝</span>
+<span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html">
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Avanzado</span>
+</a>
+<button aria-label="Alternar tema claro/oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">💪 Salud y fitness</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Los 33 hooks virales de Salud y fitness, con frase hablada, visual y texto en pantalla — agrupados según los 5 patrones que detienen el scroll.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">33</div>
+<div class="text-xs text-neutral-400">Hooks</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">6</div>
+<div class="text-xs text-neutral-400">Secciones</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">~25</div>
+<div class="text-xs text-neutral-400">Minutos</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-blue-400">Práctico</div>
+<div class="text-xs text-neutral-400">Tipo</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="2-3" data-inema-track="2" id="conteudo">
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">Cómo Saúde &amp; Fitness capta la atención</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t1-p1">Vender resultados con menos sacrificio. El público quiere el cuerpo/la energía sin dolor: el hook ofrece el "error que te frena", el atajo ("la mitad del entrenamiento") y el mito de la industria ("vendido como saludable").</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Fórmula del hook en 3 pasos: Context Lean (contexto mínimo), Scroll Stop (la escena que detiene el dedo) y Contrarian Snapback (el giro que te mantiene hasta el final)" class="w-full h-auto" role="img" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="f3-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="f3-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="f3-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="f3-ah" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#f3-grid)" height="200" width="800" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2">
+<path class="wf-a" d="M250,100 L290,100" marker-end="url(#f3-ah)"></path>
+<path class="wf-a" d="M510,100 L550,100" marker-end="url(#f3-ah)"></path>
+</g>
+<rect fill="#0e1622" height="80" rx="14" stroke="url(#f3-grad)" stroke-width="2" width="210" x="40" y="60"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="145" y="92">1 · Context Lean</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="145" y="112">contexto mínimo, sin rodeos</text>
+<g filter="url(#f3-glow)"><rect fill="#0e1622" height="80" rx="14" stroke="url(#f3-grad)" stroke-width="2.4" width="210" x="295" y="60"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="400" y="92">2 · Scroll Stop</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="112">la escena que hace que el dedo se detenga</text>
+<rect fill="#0e1622" height="80" rx="14" stroke="url(#f3-grad)" stroke-width="2" width="210" x="550" y="60"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="655" y="92">3 · Contrarian Snapback</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="655" y="112">el giro que te mantiene hasta el final</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="145" y="40">qué decir</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="40">qué mostrar</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="655" y="40">qué prometer</text>
+</svg>
+</div>
+<p class="text-neutral-400 text-sm mb-2 text-center">La fórmula del PDF — <strong class="text-blue-400">Context Lean → Scroll Stop → Contrarian Snapback</strong> — aplicada a los 33 hooks de este nicho.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mt-6">
+<h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Cómo leer cada tarjeta</h3>
+<p class="text-neutral-300 text-sm" data-inema-block="m2-3-t1-p2">Cada hook de abajo incluye las <strong>3 capas</strong> apiladas: la <strong>frase hablada</strong> (en inglés, lista para usar o adaptar), la traducción al PT-BR, el <strong>🎬 Visual</strong> (qué mostrar) y la insignia azul con el <strong>Text Hook</strong> (el texto breve en pantalla). La imagen es una referencia visual generada para cada ejemplo.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">💬</div><div class="text-sm font-semibold text-blue-400">Frase hablada</div><p class="text-xs text-neutral-400 mt-1">la línea que narras/escribes</p></div>
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎬</div><div class="text-sm font-semibold text-blue-400">Hook visual</div><p class="text-xs text-neutral-400 mt-1">la escena que aparece en pantalla</p></div>
+<div class="bg-dark-800 rounded-xl p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🔤</div><div class="text-sm font-semibold text-blue-400">Text Hook</div><p class="text-xs text-neutral-400 mt-1">el overlay corto de 2-3 palabras</p></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">⚠️ Miedo y apuesta alta</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t2-p1">Amenaza, pérdida o riesgo. El cerebro no puede ignorar lo que parece peligroso — es el «scroll stop» más primitivo. Funciona cuando hay algo que perder. <span class="text-blue-400 font-semibold">11 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 1 — Persona sudando en el gimnasio; la barra de progreso se queda en 50%. (texto en pantalla: Wrong Goal)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-01.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#01</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Wrong Goal</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Estás entrenando por la razón equivocada, y eso está frenando tu progreso.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Entrenas por el motivo equivocado, y eso frena tu progreso.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person sweating in gym, progress bar stuck at 50%.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 5 — Comida saludable con una gran superposición roja que dice “Regla”. (texto en pantalla: Regla incumplida)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-05.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#05</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Regla incumplida</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría de las dietas fracasan porque ignoran esta regla.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría de las dietas fracasa por ignorar esta regla.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Healthy meal with big red “Rule” overlay.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 9 — Máquina de ejercicio anticuada cubierta de polvo. (texto en pantalla: Deja de hacer esto)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-09.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#09</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Deja de hacer esto</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Deja de entrenar así: te está frenando.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Deja de entrenar así — esto te frena.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Outdated workout machine gathering dust.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 11 — Estante de suplementos que se desvanece, excepto por un frasco iluminado. (texto en pantalla: Only This)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-11.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#11</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Only This</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría de los suplementos son un desperdicio, excepto este.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Casi todos los suplementos son un desperdicio, excepto este.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Estante de suplementos que se desvanece, excepto por un frasco que brilla.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 12 — Dos alimentos que se fusionan con un efecto de «quema de grasa». (texto en pantalla: Fat Destroyer)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-12.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#12</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Destructor de grasa</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Esta combinación de alimentos quema grasa más rápido que cualquier otra cosa.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Esta combinación de alimentos quema grasa como ninguna otra.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Two foods merging into a “fat burn” effect.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 14 — Persona levantando peso con mala técnica, alerta roja superpuesta. (texto en pantalla: Form Fail)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-14.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#14</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Error de forma</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este error al entrenar arruina tus resultados.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este error de entrenamiento arruina tus resultados.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person lifting with bad form, red alert overlay.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 20 — Gráfico de progreso estancado reemplazado por una curva ascendente. (texto en pantalla: Change Routine)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-20.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#20</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Cambia la rutina</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Tu cuerpo no está estancado: tu rutina sí.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Tu cuerpo no está rígido: tu rutina sí.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Gráfico de progreso plano reemplazado por una curva ascendente.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 23 — Comer demasiada comida chatarra después de entrenar. (texto en pantalla: Error imbatible)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-23.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#23</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Unbeatable Mistake</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“No puedes compensar este error entrenando más.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> No entrenas lo suficiente para compensar este error.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Overeating junk food after workout.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 30 — El reloj avanza mientras la persona mira contenido en el teléfono. (texto en pantalla: Tiempo perdido)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-30.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#30</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Wasted Time</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría desperdicia sus primeros 10 minutos en el gimnasio.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría desperdicia los primeros 10 minutos en el gimnasio.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> El reloj avanza mientras una persona mira contenido en el teléfono.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 31 — Un snack “saludable” que revela su contenido de azúcar. (texto en pantalla: Falsamente saludable)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-31.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#31</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Falso saludable</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este alimento se promociona como saludable… pero está frenando tu progreso.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este alimento se vende como saludable… pero acaba con tu progreso.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Snack “saludable” con revelación del contenido de azúcar.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 32 — Persona que se salta los estiramientos de recuperación. (texto en pantalla: Fallo en la recuperación)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-32.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#32</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Fallo de recuperación</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Tus músculos no crecen por este error de recuperación.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Tu músculo no crece por este error de recuperación.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person skipping cooldown stretch.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🔄 Contrarianismo y ruptura de creencias</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t3-p1">El "Contrarian Snapback": empieza coincidiendo con el sentido común y luego le da la vuelta ("…no es"). La tensión entre lo que la persona cree y lo que afirmas mantiene la atención hasta que aparece la respuesta. <span class="text-blue-400 font-semibold">10 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 2 — Mancuerna que se convierte en una sartén. (texto en pantalla: Kitchen Gains)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-02.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#02</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Kitchen Gains</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“El mejor entrenamiento no está en el gimnasio… está en tu cocina.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> El mejor entrenamiento no es en el gimnasio… es en tu cocina.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Mancuerna convirtiéndose en una sartén.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 3 — Un abdomen marcado que se transforma en un corazón fuerte y sano. (texto en pantalla: Persigue esto)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-03.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#03</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Ve tras esto</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Todos buscan marcar los abdominales… esto es lo que deberían buscar en su lugar.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Todo el mundo quiere abdominales marcados… mira qué debería buscar.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Abdominales marcados que se transforman en un corazón fuerte y saludable.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 7 — Calendario lleno de entrenamientos reemplazado por un solo registro de hábitos. (texto en pantalla: Un hábito)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-07.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#07</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Habit</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“No necesitas más entrenamientos: necesitas esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> No necesitas más entrenamientos: necesitas esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Un calendario lleno de entrenamientos es reemplazado por un único seguimiento de hábitos.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 10 — Mancuerna ligera con efectos de rayos. (texto en pantalla: Not Heavier)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-10.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#10</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Not Heavier</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Me hice más fuerte sin levantar más peso.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Me hice más fuerte sin levantar más peso.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Mancuerna ligera con efectos de rayos.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 15 — Miembro del gimnasio que se baja de la cinta antes de tiempo. (texto en pantalla: Do Less)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-15.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#15</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Haz menos</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Las personas más fuertes que conozco hacen menos de esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Las personas más exitosas que conozco hacen menos de esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Gym member leaving treadmill early.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 16 — Montaje de ejercicios al aire libre. (texto en pantalla: No Gym)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-16.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#16</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">No Gym</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“No necesitas ir al gimnasio para tener un cuerpo marcado.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> No necesitas gimnasio para definirte.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Outdoor workout montage.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 22 — Gimnasio vacío por la mañana, lleno por la noche. (texto en pantalla: Momento equivocado)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-22.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#22</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Wrong Time</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“El mejor momento para entrenar no es el que piensas.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mejor hora para entrenar no es la que piensas.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Gym empty in the morning, packed in the evening.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 25 — Toalla sudada que cae al suelo. (texto en pantalla: No te rindas)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-25.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#25</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">No te rindas</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“La mayoría se rinde por esto… tú no lo hagas.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> La mayoría se rinde por esto… no te rindas.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Sweat towel hitting the floor.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 26 — Levantar pesas pesadas mientras aumenta el contador de resistencia. (texto en pantalla: Lo opuesto al cardio)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-26.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#26</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Opposite of Cardio</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Desarrollé mi resistencia haciendo lo contrario del cardio.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Gané resistencia haciendo lo contrario del cardio.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Levantamiento de pesas con un contador de resistencia que sube.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 28 — Evitar la comida rápida a altas horas de la noche. (texto en pantalla: Nunca lo hagas)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-28.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#28</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Never Do</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Las personas más saludables que conozco nunca hacen esto.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Las personas más saludables que conozco nunca hacen esto.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Evitar la comida rápida a altas horas de la noche.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🔢 Número y especificidad</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t4-p1">Cifras, plazos y cantidades exactas ($10.000, 4 segundos, 30 días). Lo específico suena verdadero y medible: el cerebro confía más en un número que en un adjetivo. <span class="text-blue-400 font-semibold">2 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 13 — Calendario de 30 días que pasa rápidamente. (texto en pantalla: Start Here)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-13.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#13</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Empieza aquí</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Puedes transformar tu cuerpo en 30 días… si empiezas por aquí.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Transformas tu cuerpo en 30 días… si empiezas por aquí.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> 30-day calendar flipping rapidly.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 24 — Persona que hace un estiramiento específico con una animación de alivio. (texto en pantalla: Dolor aliviado)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-24.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#24</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Pain Gone</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este estiramiento alivió mi dolor de espalda en 5 minutos.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este estiramiento curó mi dolor de espalda en 5 minutos.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person doing a specific stretch with relief animation.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🏆 Prueba personal y resultado</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t5-p1">Primera persona, resultado concreto («Yo hice / perdí / dupliqué»). Una historia real genera identificación y curiosidad: «¿cómo lo logró ÉL?». <span class="text-blue-400 font-semibold">5 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 6 — Báscula de alimentos arrojada a la basura. (texto en pantalla: Sin contar)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-06.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#06</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">No Counting</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Dejé de contar calorías… y logré la mejor forma física de mi vida.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Dejé de contar calorías… y logré la mejor forma de mi vida.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Báscula de cocina arrojada a la basura.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 17 — Temporizador de 60 mins a 30 mins, mientras aumenta la masa muscular. (texto en pantalla: Half Time)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-17.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#17</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Half Time</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Desarrollé más músculo al reducir mi entrenamiento a la mitad.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Gané más músculo reduciendo el entrenamiento a la mitad.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Timer from 60 mins to 30 mins, muscle mass increasing.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 19 — Acercamiento a la técnica correcta de agarre. (texto en pantalla: Tiny Fix)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-19.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#19</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Tiny Fix</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Dupliqué mi fuerza al corregir este pequeño detalle.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Dupliqué mi fuerza ajustando un detalle minúsculo.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Zoom-in on proper grip technique.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 27 — Bebida preentrenamiento y montaje de calentamiento. (texto en pantalla: Ventaja antes de entrenar)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-27.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#27</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Pre-Workout Win</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este hábito antes de entrenar duplicó mis resultados.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este hábito antes de entrenar duplicó mis resultados.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Pre-workout drink and warm-up montage.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 33 — Persona que se despierta antes de que suene la alarma, llena de energía. (texto en pantalla: Menos horas de sueño)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-33.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#33</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Less Sleep</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Tuve más energía al dormir menos.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Gané más energía durmiendo menos.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person waking up before alarm, energized.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🧲 Curiosidad y ciclo abierto</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t6-p1">Abre una brecha de información y guarda la respuesta ("esto", "aquí está lo que…"). El loop abierto genera inquietud mental: el espectador se queda para cerrar el ciclo. <span class="text-blue-400 font-semibold">5 hooks de este nicho usan este patrón.</span></p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 4 — Reloj avanzando mientras baja el porcentaje de grasa corporal. (texto en pantalla: Más rápido que el cardio)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-04.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#04</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Más rápido que el cardio</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este hábito quema más grasa que una hora de cardio.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este hábito quema más grasa que una hora de cardio.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> El reloj avanza mientras baja el porcentaje de grasa corporal.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 8 — Persona dormida, con músculos que crecen sutilmente en una animación. (texto en pantalla: Ganancias mientras duermes)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-08.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#08</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Beneficios del sueño</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este truco de recuperación desarrolla músculo mientras duermes.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este truco de recuperación desarrolla músculo mientras duermes.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person sleeping, muscles subtly growing in animation.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 18 — Persona haciendo un ejercicio compuesto poco común. (texto en pantalla: Underrated Move)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-18.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#18</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Underrated Move</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este es el ejercicio más infravalorado para ganar fuerza en todo el cuerpo.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este es el ejercicio más subestimado para lograr fuerza total.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person doing a unique compound movement.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 21 — Persona que bebe agua al amanecer. (texto en pantalla: Morning Burn)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-21.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#21</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">Desgaste matutino</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Este hábito matutino quema grasa todo el día.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Este hábito matutino quema grasa todo el día.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Person drinking water at sunrise.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+<img alt="Hook 29 — Comparación lado a lado del antes y el después con un cambio resaltado. (texto en pantalla: Un ajuste)" class="hook-img" height="576" loading="lazy" src="../../../curso/trilha2/img/health-fitness/hook-29.webp" width="1024"/>
+<div class="p-4 flex flex-col flex-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-blue-400 font-bold text-sm">#29</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30" title="Texto en pantalla (overlay)">One Tweak</span>
+</div>
+<p class="text-neutral-100 font-medium text-sm mb-2 leading-snug">“Estás a un pequeño ajuste de conseguir el cuerpo de tus sueños.”</p>
+<p class="text-neutral-400 text-xs mb-3"><span class="text-blue-400 font-semibold">PT:</span> Estás a un ajuste de tener el cuerpo de tus sueños.</p>
+<p class="text-neutral-500 text-xs mt-auto"><span class="font-semibold text-neutral-400">🎬 Visual:</span> Comparación lado a lado del antes y el después, con un cambio resaltado.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">33 hooks listos</strong><span class="text-neutral-400"> de Salud &amp; Fitness, cada uno con una frase hablada, un visual y texto en pantalla.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">5 patrones virales</strong><span class="text-neutral-400"> mapeados: miedo, contrarian, número, prueba personal y curiosidad.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La fórmula aplicada</strong><span class="text-neutral-400"> — Context Lean → Scroll Stop → Contrarian Snapback — vistos en ejemplos reales.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Próximo paso</strong><span class="text-neutral-400"> — lleva uno de estos hooks a la Ruta 3 y genera variaciones con IA.</span></div></div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-4.html">Siguiente nicho →</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>33 Viral Hooks - 2026 | <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+</body>
+</html>

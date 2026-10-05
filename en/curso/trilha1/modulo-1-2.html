@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="viralhooks" name="inema-course"/>
+<title>The 3 layers of the hook | 33 Viral Hooks</title>
+<!-- ANTI-FOUC: bloqueante, ANTES do Tailwind -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style; var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
+<script data-inema-manifest="" type="application/json">
+  {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - acento emerald */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+
+    /* Light mode - remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.22); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG light mode + animacao */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    /* Topicos expansiveis */
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    /* Card de hook (trilha 2) */
+    .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  </style>
+<link href="https://inematds.github.io/33viralhooks/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🪝</span>
+<span class="font-bold text-lg hidden sm:inline">33 Viral Hooks</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentals</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Techniques</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html">
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Advanced</span>
+</a>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation track" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Track 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧱 The 3 layers of the hook</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Spoken phrase, Visual Hook, and Text Hook: what each layer does, how they reinforce one another, and how to create your own.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">6</div>
+<div class="text-xs text-neutral-400">Topics</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">~30</div>
+<div class="text-xs text-neutral-400">Minutes</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">Base</div>
+<div class="text-xs text-neutral-400">Level</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-emerald-400">Practical</div>
+<div class="text-xs text-neutral-400">Type</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="1-2" data-inema-track="1" id="conteudo">
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">The 3 layers of every hook in this course</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p1">Each of the 165 hooks in this course is built in <strong>3 layers</strong> that play at the same time in the first few seconds. Understanding the layers lets you build new hooks from scratch.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="The 3 stacked layers of a hook: spoken line (what you hear), visual hook (what you see), and text hook (the short on-screen text), working together in the first few seconds" class="w-full h-auto" role="img" viewbox="0 0 800 240">
+<defs>
+<lineargradient id="t1m2-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="t1m2-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t1m2-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t1m2-grid)" height="240" width="800" x="0" y="0"></rect>
+<g filter="url(#t1m2-glow)"><rect fill="#0e2018" height="200" rx="18" stroke="url(#t1m2-grad)" stroke-width="2.4" width="300" x="250" y="20"></rect></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="400" y="46">the viewer’s phone</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#34d399" stroke-width="1.6" width="240" x="280" y="60"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="80">💬 Spoken line</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="97">what you HEAR</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#38bdf8" stroke-width="1.6" width="240" x="280" y="112"></rect>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="132">🎬 Visual Hook</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="149">what you SEE</text>
+<rect fill="#13241c" height="44" rx="10" stroke="#34d399" stroke-width="1.6" width="240" x="280" y="164"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="400" y="184">🔤 Text Hook</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="201">what you READ on screen</text>
+</svg>
+</div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> The 3 layers</h3><p class="text-neutral-300 mb-3 text-sm">They work through different sensory channels — hearing, sight, and reading — so they reinforce one another.</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Spoken line</strong> (spoken line): what you narrate or say at the start. It's the verbal tension.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> the scene/image that appears — what stops the scroll before the audio.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> the short text (2–3 words) overlaid on screen for people watching without sound.</span></li></ul></div>
+<div class="overflow-x-auto mb-6 rounded-xl border border-dark-600">
+<table class="w-full text-sm text-left">
+<thead class="bg-dark-700/60 text-emerald-400"><tr><th class="px-4 py-3 font-semibold">Layer</th><th class="px-4 py-3 font-semibold">Channel</th><th class="px-4 py-3 font-semibold">Function</th><th class="px-4 py-3 font-semibold">Example</th></tr></thead>
+<tbody class="divide-y divide-dark-600"><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Spoken phrase</td><td class="px-4 py-3 text-neutral-300">ear</td><td class="px-4 py-3 text-neutral-300">verbal tension, gap</td><td class="px-4 py-3 text-neutral-300">"…but that’s not what’s shocking"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Visual Hook</td><td class="px-4 py-3 text-neutral-300">eye</td><td class="px-4 py-3 text-neutral-300">stops the scroll at frame 0</td><td class="px-4 py-3 text-neutral-300">empty chair + "Position Closed"</td></tr><tr class="bg-dark-800"><td class="px-4 py-3 font-medium text-neutral-100">Text Hook</td><td class="px-4 py-3 text-neutral-300">reading</td><td class="px-4 py-3 text-neutral-300">hook with the sound off</td><td class="px-4 py-3 text-neutral-300">AI Took the Job</td></tr></tbody>
+</table>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Why 3 instead of 1</h3><p class="text-neutral-300 text-sm">85% of people start videos on mute. Without a Text Hook and Visual, they never hear your best line. The 3 layers ensure the hook works with or without sound.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">Layer 1 — the spoken line (spoken line)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p1">A <strong class="text-emerald-400">spoken line</strong> it's the line you narrate in the first few seconds. This is where verbal tension lives — the gap that demands an answer.</p>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> New here? Spoken line ≠ caption</h3><p class="text-neutral-300 text-sm">The spoken line is the script for what you SAY. The auto-caption transcribes it, but the Text Hook (layer 3) is different: it's a very short, carefully chosen summary displayed prominently.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> What makes a good spoken line</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Fits in ~2 seconds of speech (short).</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Opens a gap ("…but that’s not what’s shocking").</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Use something specific (number, name, value) instead of a vague adjective.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>End by leaving the question hanging, not the answer.</span></li></ul></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Strong spoken line</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"I asked AI for the impossible… it did it in 4 seconds."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"I lost $50,000 in a week… and I’d do it again."</span></li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Weak spoken line</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Today I’m going to show you some cool AI stuff."</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Investing is important; today we’re going to talk about money."</span></li></ul></div>
+</div>
+<details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+<summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Going deeper: 4 openings that always create a curiosity gap</summary>
+<div class="mt-4 text-neutral-300 text-sm space-y-3"><ul class="space-y-2"><li>• <strong>"Most people think X…"</strong> → challenges a belief.</li><li>• <strong>"I [absurd result]…"</strong> → personal proof + curiosity.</li><li>• <strong>"This [thing] can [impossible feat]…"</strong> → demonstration.</li><li>• <strong>"The [superlative] … isn’t where you’d expect."</strong> → breaks expectations.</li></ul></div>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">Layer 2 — the Visual Hook</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p1">O <strong class="text-emerald-400">Visual Hook</strong> it's the scene that appears on screen at second zero. Often, it's what REALLY stops the scroll — before the brain processes a single word.</p>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> New here? Visual Hook in one sentence</h3><p class="text-neutral-300 text-sm">It's the image or micro-scene that illustrates (or contrasts with) the spoken line: an empty office chair, a graph plunging in red, a piggy bank breaking. Concrete, tense, and easy to read on a phone screen.</p></div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> 3 types of Visual Hooks that work</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Show the consequence:</strong> "Position Closed" on screen, bank account plummeting.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Creates contrast:</strong> ChatGPT × ultra-futuristic UI side by side.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Quick transformation:</strong> US$100 turning into gold bars, a dumbbell turning into a frying pan.</span></li></ul></div>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
+<div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Visual carrying the hook on its own</span></div>
+<div class="p-5 space-y-2 font-mono text-sm">
+<p class="text-neutral-200"><span class="text-emerald-400">💬 Spoken:</span> "This trick clones your voice in 3 seconds."</p>
+<p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> audio waveform transforming from one voice into another</p>
+<p class="text-neutral-200"><span class="text-primary">🔤 Text:</span> Voice Cloning</p>
+</div>
+<div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Even without sound, the changing wave “tells” the story — the visual itself is the hook.</div></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> In the course, each hook has a reference image</h3><p class="text-neutral-300 text-sm">In Track 2, you’ll see an AI-generated image for each of the 165 Visual Hooks—so you can visualize the scene before you record.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">Layer 3 — the Text Hook (overlay)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p1">O <strong class="text-emerald-400">Text Hook</strong> it's the short text overlaid on the screen — usually 2 to 3 large words. It's the hook for people watching on mute.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="With the sound off, the spoken line disappears, but the Visual Hook and Text Hook keep working—that's why the hook needs all 3 layers" class="w-full h-auto" role="img" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="t1snd-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<pattern height="32" id="t1snd-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t1snd-grid)" height="200" width="800" x="0" y="0"></rect>
+<rect fill="#1a1a2e" height="140" rx="14" stroke="#4b5563" stroke-width="2" width="300" x="60" y="30"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="210" y="24">85% watch on MUTE 🔇</text>
+<text fill="#6b7280" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" text-decoration="line-through" x="210" y="72">💬 spoken line (they don't hear)</text>
+<rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="1.5" width="240" x="90" y="92"></rect>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="210" y="112">🎬 Visual Hook (they see)</text>
+<rect fill="#13241c" height="26" rx="8" stroke="#34d399" stroke-width="1.5" width="180" x="120" y="130"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="210" y="148">🔤 AI Took the Job</text>
+<g filter="url(#t1snd-grad)"></g>
+<path d="M410,100 L470,100" marker-end="url(#t1snd-ah)" stroke="#34d399" stroke-width="2.5"></path>
+<defs><marker id="t1snd-ah" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#34d399"></path></marker></defs>
+<g><rect fill="#0e2018" height="90" rx="14" stroke="url(#t1snd-grad)" stroke-width="2.2" width="270" x="490" y="55"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="625" y="92">the hook still works</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="625" y="115">visuals + text hold attention without sound</text>
+</svg>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🆕</span> New here? Text Hook in one sentence</h3><p class="text-neutral-300 text-sm">It's the brutally short summary of the promise, highlighted visually: "AI Took the Job", "Lost 50K", "Passive Income Trap". It's not the full caption — it's the headline.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Text Hook Rules</h3><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Short: 2-3 words. If it doesn’t fit at a glance, it’s too long.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>High contrast, large font, in the upper or center third.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Reinforces the tension in the spoken line; it doesn't repeat the whole thing.</span></li><li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Appears right in frame 0, alongside the visual.</span></li></ul></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> English vs Português</h3><p class="text-neutral-300 text-sm">The Text Hooks in the material are in English (global market). You can use them as is or adapt them: "Lost 50K" → "I lost 50 thousand." In Track 2, each card shows the original + the PT-BR version.</p></div>
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-2#q1">
+<p class="font-medium mb-1 flex items-center gap-2"><span aria-hidden="true">🧩</span> Quick check <span class="text-xs text-neutral-500 font-normal">(optional, doesn't block progress)</span></p>
+<p class="text-neutral-300 text-sm mb-4">85% of people start videos on mute. Which layer DOESN'T reach them?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">A) The Visual Hook</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">B) The spoken line</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">C) The Text Hook</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">How the 3 layers reinforce each other (and common mistakes)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p1">The magic isn’t in each layer on its own, but in the <strong>overlay</strong>. When all three point to the same tension, the hook becomes hard to ignore.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Correct stacking — example</h3><p class="text-neutral-300 mb-3 text-sm">Hook “AI Took the Job”:</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>💬 Spoken: "AI replaced a $200,000 job… but that's not the shocking part."</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🎬 Visual: empty office chair, screen with the warning "Position Closed".</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>🔤 Text: AI Took the Job.</span></li></ul></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Layers aligned</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>All 3 point to the same idea (job threat).</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>A concrete visual you can "read" in 1 second.</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Short text that reinforces without repeating the spoken words.</span></li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Layers clash</h4><ul class="space-y-3 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The voiceover talks about AI, while the visuals show generic scenery.</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Text that’s too long (a full sentence on screen).</span></li><li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Beautiful visual, but no tension at all.</span></li></ul></div>
+</div>
+<details class="bg-dark-800 rounded-xl border border-dark-600 p-5 mb-6 group">
+<summary class="cursor-pointer font-semibold text-emerald-400 flex items-center gap-2 list-none"><span class="transition-transform group-open:rotate-90">▸</span> Going deeper: the 3-cut test</summary>
+<div class="mt-4 text-neutral-300 text-sm space-y-3"><p>Take your finished hook and run 3 isolated tests: <strong>(1)</strong> read only the Text Hook — does it spark curiosity on its own? <strong>(2)</strong> watch only the visuals on mute — can you understand the tension? <strong>(3)</strong> listen to just the speech with your eyes closed — does it leave a gap? If it passes all three, your layers are aligned and the hook works in any viewing situation.</p></div>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-16 scroll-mt-20" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">Exercise: build your 3 layers</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p1">Time to practice. Take one of your ideas and fill in the 3 layers — this is exactly the format you’ll reuse for the rest of your life.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6"><h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧠</span> Three-layer template</h3><p class="text-neutral-300 mb-3 text-sm">null</p><ul class="space-y-2 text-neutral-300 text-sm"><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>💬 Spoken line:</strong> _________ (short, with a gap + specific detail)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🎬 Visual Hook:</strong> _________ (concrete scene with tension)</span></li><li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>🔤 Text Hook:</strong> _________ (2-3 words)</span></li></ul></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h4 class="font-semibold text-white mb-3">Completed example (fitness niche)</h4>
+<div class="bg-dark-700 rounded-lg p-4 font-mono text-sm space-y-1">
+<p class="text-emerald-400">💬 "The best workout isn't at the gym… it's in your kitchen."</p>
+<p class="text-sky-400">🎬 dumbbell turning into a frying pan</p>
+<p class="text-primary">🔤 Kitchen Gains</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 overflow-hidden mb-6">
+<div class="px-5 py-3 bg-emerald-900/20 border-b border-emerald-500/30"><span class="text-emerald-400 font-semibold text-sm">🔬 Same exercise, finance niche</span></div>
+<div class="p-5 space-y-2 font-mono text-sm">
+<p class="text-neutral-200"><span class="text-emerald-400">💬 Spoken:</span> "Your savings account is costing you money."</p>
+<p class="text-neutral-200"><span class="text-sky-400">🎬 Visual:</span> bank vault leaking bills onto the floor</p>
+<p class="text-neutral-200"><span class="text-primary">🔤 Text:</span> Losing Money</p>
+</div>
+<div class="px-5 py-3 bg-dark-700/40 border-t border-dark-600 text-neutral-400 text-sm">Spoken line with a paradox (savings that cost you), visuals of a concrete loss, 2-word headline text.</div></div>
+<div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6"><h3 class="text-lg font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Quick check</h3><p class="text-neutral-300 text-sm">Read only the Text Hook: does it spark curiosity on its own? Look only at the Visual: can you understand the tension with no sound? If the answer to both is yes, your layers are strong.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span>
+<span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Module summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">3 layers</strong><span class="text-neutral-400"> — spoken line, Visual Hook, and Text Hook working together.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Optional sound</strong><span class="text-neutral-400"> — the hook needs to work on mute (visuals + text).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Alignment</strong><span class="text-neutral-400"> — all 3 layers point to the same tension.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Reusable template</strong><span class="text-neutral-400"> — you already know how to build your own 3 layers.</span></div></div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to the track</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-3.html">Module 1.3 →</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>33 Viral Hooks - 2026 | <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const _html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !_html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden'); _html.classList.remove('dark');
+    } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      _html.classList.toggle('dark');
+      localStorage.setItem('theme', _html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function toggleTopic(button) {
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      card.querySelectorAll('.topic-explanation.active').forEach(e => { if (e !== exp) e.classList.remove('active'); });
+      exp.classList.toggle('active');
+      const open = exp.classList.contains('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  </script>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck("modulo-1-2#q1", { answer: 1, explain: {"0":"O visual é exatamente o que funciona no mudo — chega sim.","1":"Isso. Sem som, a frase falada não é ouvida — por isso visual + texto são obrigatórios.","2":"O texto na tela é lido mesmo sem som — chega."} });
+      }
+    });
+  </script>
+</body>
+</html>

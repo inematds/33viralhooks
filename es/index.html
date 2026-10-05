@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="pt-BR">
+<html class="dark" lang="es">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -58,7 +58,7 @@
       primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
   </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="assets/learn.css" rel="stylesheet"/>
+<link href="../assets/learn.css" rel="stylesheet"/>
 <!-- Manifesto do curso (OBRIGATORIO em TODA pagina, identico) -->
 <script data-inema-manifest="" type="application/json">
   {"course":"viralhooks","tracks":[{"n":"1","title":"Fundamentos","modules":[{"id":"1-1","title":"Anatomia de um hook","topics":6,"href":"curso/trilha1/modulo-1-1.html"},{"id":"1-2","title":"As 3 camadas do hook","topics":6,"href":"curso/trilha1/modulo-1-2.html"},{"id":"1-3","title":"A fórmula e os 5 nichos","topics":6,"href":"curso/trilha1/modulo-1-3.html"}]},{"n":"2","title":"Técnicas","modules":[{"id":"2-1","title":"AI & Technology","topics":6,"href":"curso/trilha2/modulo-2-1.html"},{"id":"2-2","title":"Finanças & Negócios","topics":6,"href":"curso/trilha2/modulo-2-2.html"},{"id":"2-3","title":"Saúde & Fitness","topics":6,"href":"curso/trilha2/modulo-2-3.html"},{"id":"2-4","title":"Autodesenvolvimento","topics":6,"href":"curso/trilha2/modulo-2-4.html"},{"id":"2-5","title":"Viagem & Aventura","topics":6,"href":"curso/trilha2/modulo-2-5.html"}]},{"n":"3","title":"Avançado","modules":[{"id":"3-1","title":"Prompts para gerar hooks","topics":6,"href":"curso/trilha3/modulo-3-1.html"},{"id":"3-2","title":"Sua Hook Machine","topics":6,"href":"curso/trilha3/modulo-3-2.html"}]}]}
@@ -143,7 +143,7 @@
     .hook-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
   </style>
 <link href="https://inematds.github.io/33viralhooks/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/33viralhooks/es/" hreflang="es" rel="alternate"/></head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="./" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="en/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../en/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center h-14">
@@ -163,9 +163,9 @@
 <span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnicas</span>
 </a>
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="curso/trilha3/index.html">
-<span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Avanzado</span>
 </a>
-<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
+<button aria-label="Alternar tema claro/oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2" id="theme-toggle">
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
 </svg>
@@ -180,13 +180,13 @@
 <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-8">
-<span class="inline-block px-4 py-1.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-6">VÍDEO CURTO · TIKTOK · REELS · SHORTS</span>
-<h1 class="text-4xl sm:text-5xl font-bold mb-4">🪝 33 Viral Hooks</h1>
-<p class="text-xl text-neutral-400 max-w-2xl mx-auto mb-2">Pare o dedo nos 3 primeiros segundos.</p>
-<p class="text-neutral-500 max-w-xl mx-auto">Os 33 viral hooks de cada um dos 5 nichos mais populares — com a frase falada, o visual, o texto na tela e uma imagem de referência pra cada exemplo. Da teoria à sua própria máquina de hooks.</p>
+<span class="inline-block px-4 py-1.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-6">VIDEO CORTO · TIKTOK · REELS · SHORTS</span>
+<h1 class="text-4xl sm:text-5xl font-bold mb-4">🪝 33 hooks virales</h1>
+<p class="text-xl text-neutral-400 max-w-2xl mx-auto mb-2">Detén el dedo en los primeros 3 segundos.</p>
+<p class="text-neutral-500 max-w-xl mx-auto">Los 33 hooks virales de cada uno de los 5 nichos más populares — con la frase hablada, el visual, el texto en pantalla y una imagen de referencia para cada ejemplo. De la teoría a tu propia máquina de hooks.</p>
 </div>
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden max-w-4xl mx-auto">
-<svg aria-label="Jornada do curso em 3 trilhas: Fundamentos, Técnicas (165 hooks) e Avançado" class="w-full h-auto" role="img" viewbox="0 0 900 180">
+<svg aria-label="Recorrido del curso en 3 rutas: Fundamentos, Técnicas (165 hooks) y Avanzado" class="w-full h-auto" role="img" viewbox="0 0 900 180">
 <defs>
 <lineargradient id="lh-e" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
 <lineargradient id="lh-b" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
@@ -202,23 +202,23 @@
 </g>
 <rect fill="#0e2018" height="80" rx="14" stroke="url(#lh-e)" stroke-width="2" width="250" x="40" y="50"></rect>
 <text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="165" y="82">🧭 Fundamentos</text>
-<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="165" y="103">hook · 3 camadas · fórmula</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="165" y="103">hook · 3 capas · fórmula</text>
 <g filter="url(#lh-glow)"><rect fill="#0e1622" height="80" rx="14" stroke="url(#lh-b)" stroke-width="2.4" width="260" x="330" y="50"></rect></g>
 <text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="460" y="82">🎯 Técnicas</text>
-<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="460" y="103">165 hooks · 5 nichos · imagens</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="460" y="103">165 hooks · 5 nichos · imágenes</text>
 <rect fill="#1a1230" height="80" rx="14" stroke="url(#lh-p)" stroke-width="2" width="230" x="630" y="50"></rect>
-<text fill="#c084fc" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="745" y="82">🛠️ Avançado</text>
-<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="745" y="103">prompts + sua Hook Machine</text>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="745" y="82">🛠️ Avanzado</text>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="745" y="103">prompts + tu Hook Machine</text>
 <text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="165" y="150">Trilha 1</text>
 <text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="460" y="150">Trilha 2</text>
 <text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="745" y="150">Trilha 3</text>
 </svg>
 </div>
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-emerald-400">3</div><div class="text-xs text-neutral-400">Trilhas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-emerald-400">3</div><div class="text-xs text-neutral-400">Rutas</div></div>
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-blue-400">165</div><div class="text-xs text-neutral-400">Hooks</div></div>
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-purple-400">5</div><div class="text-xs text-neutral-400">Nichos</div></div>
-<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-emerald-400">165</div><div class="text-xs text-neutral-400">Imagens</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center"><div class="text-xl font-bold text-emerald-400">165</div><div class="text-xs text-neutral-400">Imágenes</div></div>
 </div>
 </div>
 </header>
@@ -227,84 +227,84 @@
 <section class="mb-12">
 <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 <div>
-<h2 class="text-lg font-bold mb-1">Sua jornada</h2>
-<p class="text-sm text-neutral-400">Marque os módulos como lidos e acompanhe seu progresso. Tudo fica salvo no seu navegador.</p>
+<h2 class="text-lg font-bold mb-1">Tu recorrido</h2>
+<p class="text-sm text-neutral-400">Marca los módulos como leídos y sigue tu progreso. Todo queda guardado en tu navegador.</p>
 </div>
-<div aria-label="Progresso do curso" aria-valuemax="100" aria-valuemin="0" class="inema-meter shrink-0" data-inema-meter="curso" role="progressbar">
+<div aria-label="Progreso del curso" aria-valuemax="100" aria-valuemin="0" class="inema-meter shrink-0" data-inema-meter="curso" role="progressbar">
 <span class="inema-meter-pct text-2xl font-bold text-blue-400">0%</span>
-<span class="inema-meter-count text-xs text-neutral-400 block">0 de 60 tópicos</span>
+<span class="inema-meter-count text-xs text-neutral-400 block">0 de 60 temas</span>
 </div>
 </div>
 </section>
 <section class="mb-16">
-<h2 class="text-2xl font-bold mb-8">As 3 trilhas</h2>
+<h2 class="text-2xl font-bold mb-8">Las 3 rutas</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-6 transition-all" href="curso/trilha1/index.html">
 <div class="flex items-center justify-between mb-4">
 <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
 </div>
 <h3 class="text-xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🧭 Fundamentos</h3>
-<p class="text-sm text-neutral-400 mb-4">O que é um hook, as 3 camadas (falada · visual · texto) e a fórmula Context Lean → Scroll Stop → Contrarian Snapback. Todos os termos do zero.</p>
-<div class="flex flex-wrap gap-2"><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">Hook</span><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">3 camadas</span><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">Fórmula</span></div>
+<p class="text-sm text-neutral-400 mb-4">Qué es un hook, las 3 capas (hablada · visual · texto) y la fórmula Context Lean → Scroll Stop → Contrarian Snapback. Todos los términos desde cero.</p>
+<div class="flex flex-wrap gap-2"><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">Hook</span><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">3 capas</span><span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded">Fórmula</span></div>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-6 transition-all" href="curso/trilha2/index.html">
 <div class="flex items-center justify-between mb-4">
 <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 2</span>
 </div>
 <h3 class="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🎯 Técnicas — 165 hooks</h3>
-<p class="text-sm text-neutral-400 mb-4">Os 33 hooks de cada um dos 5 nichos, com imagem, frase falada, visual e texto na tela. Agrupados pelos 5 padrões virais.</p>
-<div class="flex flex-wrap gap-2"><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">AI</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Finanças</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Saúde</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Cresc.</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Viagem</span></div>
+<p class="text-sm text-neutral-400 mb-4">Los 33 hooks de cada uno de los 5 nichos, con imagen, frase hablada, visual y texto en pantalla. Agrupados según los 5 patrones virales.</p>
+<div class="flex flex-wrap gap-2"><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">AI</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Finanzas</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Salud</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Crec.</span><span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded">Viaje</span></div>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-6 transition-all" href="curso/trilha3/index.html">
 <div class="flex items-center justify-between mb-4">
 <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 3</span>
 </div>
-<h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">🛠️ Avançado</h3>
-<p class="text-sm text-neutral-400 mb-4">Prompts copy-run prontos e uma skill ("Hook Machine") pra gerar seus próprios hooks com IA — e o ciclo de publicar e medir.</p>
+<h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">🛠️ Avanzado</h3>
+<p class="text-sm text-neutral-400 mb-4">Prompts listos para copiar y ejecutar y una skill ("Hook Machine") para generar tus propios hooks con IA, y el ciclo de publicar y medir.</p>
 <div class="flex flex-wrap gap-2"><span class="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded">Prompts</span><span class="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded">Skill</span><span class="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded">Pipeline</span></div>
 </a>
 </div>
 </section>
 <section class="mb-16">
-<h2 class="text-2xl font-bold mb-6">Para quem é este curso</h2>
+<h2 class="text-2xl font-bold mb-6">Para quién es este curso</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-<h4 class="font-bold text-emerald-400 mb-4">É pra você se:</h4>
+<h4 class="font-bold text-emerald-400 mb-4">Es para ti si:</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Posta (ou quer postar) Reels, TikToks ou Shorts</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Seus vídeos têm poucas views e você suspeita do início</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Quer um banco de hooks prontos pra usar e adaptar</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Quer usar IA pra gerar ganchos no seu nicho</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Publicas (o quieres publicar) Reels, TikToks o Shorts</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tus videos tienen pocas vistas y sospechas que el problema está en el inicio</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Quieres un banco de hooks listos para usar y adaptar</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Quieres usar IA para generar ganchos en tu nicho</span></li>
 </ul>
 </div>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-<h4 class="font-bold text-red-400 mb-4">Não é pra você se:</h4>
+<h4 class="font-bold text-red-400 mb-4">No es para ti si:</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
-<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Procura edição avançada de vídeo (corte, color, áudio)</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Quer um curso de estratégia de canal de ponta a ponta</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Espera fórmula mágica sem testar e medir</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Busca edición avanzada de video (corte, color, audio)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>¿Quieres un curso de estrategia de canal de principio a fin</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Espera una fórmula mágica sin probar ni medir</span></li>
 </ul>
 </div>
 </div>
 </section>
 <section class="mb-16">
-<h2 class="text-2xl font-bold mb-6">O que você leva</h2>
+<h2 class="text-2xl font-bold mb-6">Qué te llevas</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">📚</span><h3 class="font-semibold mb-1">165 hooks prontos</h3><p class="text-xs text-neutral-400">33 por nicho, com as 3 camadas e imagem de referência.</p></div>
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">🧠</span><h3 class="font-semibold mb-1">A teoria que sustenta</h3><p class="text-xs text-neutral-400">Por que o hook decide o vídeo e como montar o seu.</p></div>
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">🎬</span><h3 class="font-semibold mb-1">5 padrões virais</h3><p class="text-xs text-neutral-400">Medo, contrarian, número, prova e curiosidade.</p></div>
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">⌨️</span><h3 class="font-semibold mb-1">Prompts copy-run</h3><p class="text-xs text-neutral-400">Gere hooks, camadas e imagens com IA, prontos pra colar.</p></div>
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">⚙️</span><h3 class="font-semibold mb-1">Sua Hook Machine</h3><p class="text-xs text-neutral-400">Uma skill reutilizável que faz tudo com um comando.</p></div>
-<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">📈</span><h3 class="font-semibold mb-1">O ciclo de melhorar</h3><p class="text-xs text-neutral-400">Testar, medir retenção e dobrar no que funciona.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">📚</span><h3 class="font-semibold mb-1">165 hooks listos</h3><p class="text-xs text-neutral-400">33 por nicho, con las 3 capas y una imagen de referencia.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">🧠</span><h3 class="font-semibold mb-1">La teoría que sustenta</h3><p class="text-xs text-neutral-400">Por qué el hook decide el video y cómo crear el tuyo.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">🎬</span><h3 class="font-semibold mb-1">5 patrones virales</h3><p class="text-xs text-neutral-400">Miedo, contrarian, número, prueba y curiosidad.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">⌨️</span><h3 class="font-semibold mb-1">Prompts listos para copiar y ejecutar</h3><p class="text-xs text-neutral-400">Genera hooks, capas e imágenes con IA, listos para copiar y pegar.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">⚙️</span><h3 class="font-semibold mb-1">Tu Hook Machine</h3><p class="text-xs text-neutral-400">Una skill reutilizable que hace todo con un comando.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><span class="text-2xl mb-2 block">📈</span><h3 class="font-semibold mb-1">El ciclo de mejora</h3><p class="text-xs text-neutral-400">Probar, medir la retención y duplicar lo que funciona.</p></div>
 </div>
 </section>
 <section class="mb-12">
 <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8 text-center">
-<h2 class="text-2xl font-bold mb-4">Pronto pra parar o dedo?</h2>
-<p class="text-neutral-400 mb-6 max-w-lg mx-auto">Comece pela Trilha 1 pra entender a mecânica, ou pule direto pros 165 hooks da Trilha 2.</p>
+<h2 class="text-2xl font-bold mb-4">¿Listo para detener el dedo?</h2>
+<p class="text-neutral-400 mb-6 max-w-lg mx-auto">Empieza por la Ruta 1 para entender la mecánica o ve directamente a los 165 hooks de la Ruta 2.</p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-<a class="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha1/index.html">Começar pelos Fundamentos</a>
-<a class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha2/index.html">Ver os 165 hooks</a>
+<a class="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha1/index.html">Empezar por los fundamentos</a>
+<a class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha2/index.html">Ver los 165 hooks</a>
 </div>
 </div>
 </section>
@@ -341,7 +341,7 @@
     function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
-<script src="assets/learn.js"></script>
+<script src="../assets/learn.js"></script>
 <script>
     if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
   </script>
